@@ -1,14 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-
-
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import Card from "./card";
 export default function CardView() {
-    return (
-        <div>
-            <h1>Hello World {1+1}</h1>
-        </div>
-    )
+  return (
+    <React.Fragment>
+      <Card color={"white"} />
+      <Card color={"black"} />
+    </React.Fragment>
+  );
 }
