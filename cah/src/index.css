@@ -23,7 +23,7 @@ body {
 }
 .card-header {
   font-size: 23px;
-  display: block;
+  display: flex;
   font-weight: bold;
 }
 
@@ -45,4 +45,7 @@ body {
 .card-bottom span {
   position: relative;
   bottom: 3px;
+}
+.invert {
+  filter: invert(100);
 }
