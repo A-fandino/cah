@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import icon from "./img/cah-icon.png";
 import get from "./getCard";
+import { STATUS_CODES } from "http";
 const width = 250;
 const height = width / 0.716;
 const style = {
@@ -10,23 +11,31 @@ const style = {
   },
   img: { width: 15, marginRight: 5 }
 };
-
 export default class Card extends Component {
   state = {
-    num: randIndex(),
-    text: ""
-
+    set: randIndex(70),
+    text: "",
+    setText: ""
   };
   render() {
-    
     get().then(val => {
-     const num = this.state.num
-     if (this.props.color === "white") {
-        this.setState({ text: val.white[num] });
-     } else {
-        this.setState({ text: val.black[num].text });
-     }})
-     
+      let deck;
+      let set = this.state.set;
+      let size = -1;
+      if (this.props.color === "white") {
+        deck = val[set].white;
+      } else {
+        deck = val[set].black;
+      }
+      let key = {};
+      for (key in deck) {
+        if (deck.hasOwnProperty(key)) size++;
+      }
+      let num = randIndex(size);
+      this.setState({ text: deck[0].text });
+      this.setState({ setText: val[set].name });
+    });
+
     let divClass = "card " + this.props.color + "-card";
     let imgClass = "";
 
@@ -39,15 +48,13 @@ export default class Card extends Component {
         <span className="card-header">{this.state.text}</span>
         <div className="card-bottom">
           <img className={imgClass} style={style.img} src={icon} />
-          <span>Trump against humanity</span>
+          <span>{this.state.setText}</span>
         </div>
       </div>
     );
   }
-
-
 }
 
-function randIndex () {
-  return Math.floor(Math.random()*150 +1);
+function randIndex(num) {
+  return Math.floor(Math.random() * num + 1);
 }

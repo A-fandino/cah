@@ -1,3 +1,7 @@
+export default function get() {
+  return fetch("deck.json").then(resp => resp.json());
+}
+
 /* const fetch = require("node-fetch");
 const url =
   "https://raw.githubusercontent.com/crhallberg/json-against-humanity/latest/cah-all-compact.json";
@@ -7,7 +11,7 @@ export default async function fetchData() {
   return JSON.stringify(jsonResponse);
 }
  */
-
+/*
 const fetch = require("node-fetch");
 const url =
   "https://raw.githubusercontent.com/crhallberg/json-against-humanity/latest/cah-all-compact.json";
@@ -16,3 +20,4 @@ export default async function get() {
   let jsonResponse = await response.json();
   return jsonResponse;
 }
+*/
