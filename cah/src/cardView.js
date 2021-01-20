@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import Card from "./card";
+import Card from "./card2";
 import get from "./getCard";
 
 /* function getJson() {
@@ -28,10 +28,8 @@ class CardView extends Component {
   render() {
     return (
       <React.Fragment>
-        <Card color={"white"}>
-        </Card> 
-        <Card color={"black"}>
-        </Card>
+        <Card color={"white"}></Card>
+        <Card color={"black"}></Card>
       </React.Fragment>
     );
   }
