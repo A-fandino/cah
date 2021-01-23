@@ -3,6 +3,8 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import Card from "./card2";
+import firebase from "firebase";
+
 import get from "./getCard";
 
 /* function getJson() {
@@ -24,6 +26,7 @@ import get from "./getCard";
     </React.Fragment>
   );
 } */
+
 class CardView extends Component {
   render() {
     return (
