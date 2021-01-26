@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import Card from "./card2";
+import Card from "./card";
 import firebase from "firebase";
 
 import get from "./getCard";
@@ -27,12 +27,48 @@ import get from "./getCard";
   );
 } */
 
+const firebaseConfig = {
+  apiKey: "AIzaSyBDDohjZHShK-dbbS36JlbCLm-2mVkc-cg",
+  authDomain: "react-cah.firebaseapp.com",
+  projectId: "react-cah",
+  storageBucket: "react-cah.appspot.com",
+  messagingSenderId: "125556144304",
+  appId: "1:125556144304:web:a37e7b5c35c1e1428fa375",
+  measurementId: "G-YPJ51SQX3T"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
+
 class CardView extends Component {
+  constructor() {
+    super();
+    this.state = {
+      name: ""
+    };
+  }
+
+  componentWillMount() {
+    const nameRef = firebase
+      .database()
+      .ref()
+      .child("object")
+      .child("name");
+
+    console.log(nameRef);
+
+    nameRef.on("value", snapshot => {
+      this.setState({
+        name: snapshot.val()
+      });
+    });
+  }
   render() {
     return (
       <React.Fragment>
-        <Card color={"white"}></Card>
+        <h1>{this.state.name}</h1>
         <Card color={"black"}></Card>
+        <Card color={"white"}></Card>
       </React.Fragment>
     );
   }

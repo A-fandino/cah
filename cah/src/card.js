@@ -11,18 +11,20 @@ const style = {
   },
   img: { width: 15, marginRight: 5 }
 };
+
 export default class Card extends Component {
   state = {
     set: randIndex(70),
     text: "",
     setText: ""
   };
-  static getDerivedStateFromProps(props, state) {
+
+  componentDidMount() {
     get().then(async val => {
       let deck;
-      let set = /*this.*/ state.set;
+      let set = this.state.set;
       let size = -1;
-      if (/*this.*/ props.color === "white") {
+      if (this.props.color === "white") {
         deck = val[set].white;
       } else {
         deck = val[set].black;
@@ -31,12 +33,13 @@ export default class Card extends Component {
       for (key in deck) {
         if (deck.hasOwnProperty(key)) size++;
       }
+      console.log(val);
       let num = randIndex(size - 1);
-      ///*this.*/ setState({ text: deck[num].text });
-      ///*this.*/ setState({ setText: val[set].name });
+
+      this.setState({ text: deck[num].text });
+      this.setState({ setText: val[set].name });
     });
   }
-
   render() {
     let divClass = "card " + this.props.color + "-card";
     let imgClass = "";

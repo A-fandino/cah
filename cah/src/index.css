@@ -20,11 +20,16 @@ body {
   position: relative;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue",
     Helvetica, Arial, "Lucida Grande", sans-serif;
+  --box-shadow-color: black;
+  box-shadow: 7px 7px 0px 0px var(--box-shadow-color);
+  margin: 10px;
 }
 .card-header {
   font-size: 23px;
   display: flex;
   font-weight: bold;
+  overflow: hidden;
+  height: -webkit-fill-available;
 }
 
 .card-bottom {
@@ -38,6 +43,7 @@ body {
   color: black;
 }
 .black-card {
+  --box-shadow-color: #2b2b2b;
   background-color: black;
   color: white;
 }
@@ -48,4 +54,29 @@ body {
 }
 .invert {
   filter: invert(100);
+}
+
+.hand {
+  background: #2b2b2b;
+}
+
+.handCard {
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+  --size: 170px;
+}
+
+.overview {
+  position: absolute;
+  display: none;
+  width: 208px;
+  height: 307px;
+  margin: 0;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.handCard:hover .overview {
+  display: block;
 }

@@ -3,7 +3,9 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import CardView from "./cardView";
 import reportWebVitals from "./reportWebVitals";
-import firebase from "firebase";
+import Hand from "./hand";
+import HandCard from "./handCard";
+/* import firebase from "firebase";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBDDohjZHShK-dbbS36JlbCLm-2mVkc-cg",
@@ -17,16 +19,16 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
-
+ */
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      name: "Carlos"
+      name: ""
     };
   }
 
-  componentWillMount() {
+  /* componentWillMount() {
     const nameRef = firebase
       .database()
       .ref()
@@ -40,13 +42,13 @@ class App extends React.Component {
         name: snapshot.val()
       });
     });
-  }
+  } */
 
   render() {
     return (
       <React.StrictMode>
-        <h1>Hi {this.state.name}</h1>
         <CardView />
+        <Hand />
       </React.StrictMode>
     );
   }

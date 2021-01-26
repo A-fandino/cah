@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import icon from "./img/cah-icon.png";
 import get from "./getCard";
-import { STATUS_CODES } from "http";
 const width = 250;
 const height = width / 0.716;
 const style = {
@@ -14,33 +13,14 @@ const style = {
 
 export default class Card extends Component {
   state = {
-    set: randIndex(70),
-    text: "",
-    setText: ""
+    text: ""
   };
 
-  componentDidMount() {
-    get().then(async val => {
-      let deck;
-      let set = this.state.set;
-      let size = -1;
-      if (this.props.color === "white") {
-        deck = val[set].white;
-      } else {
-        deck = val[set].black;
-      }
-      let key = {};
-      for (key in deck) {
-        if (deck.hasOwnProperty(key)) size++;
-      }
-      console.log(val);
-      let num = randIndex(size - 1);
-
-      this.setState({ text: deck[num].text });
-      this.setState({ setText: val[set].name });
-    });
-  }
   render() {
+    get().then(val => {
+      this.setState({ text: val.black[0].text });
+    });
+
     let divClass = "card " + this.props.color + "-card";
     let imgClass = "";
 
@@ -53,13 +33,9 @@ export default class Card extends Component {
         <span className="card-header">{this.state.text}</span>
         <div className="card-bottom">
           <img className={imgClass} style={style.img} src={icon} />
-          <span>{this.state.setText}</span>
+          <span>Trump against humanity</span>
         </div>
       </div>
     );
   }
 }
-
-const randIndex = num => {
-  return Math.floor(Math.random() * num + 1);
-};
