@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import icon from "./img/cah-icon.png";
 import get from "./getCard";
+import randIndex from "./random";
 import { STATUS_CODES } from "http";
 const width = 250;
 const height = width / 0.716;
@@ -33,7 +34,7 @@ export default class Card extends Component {
       for (key in deck) {
         if (deck.hasOwnProperty(key)) size++;
       }
-      console.log(val);
+      //console.log(val);
       let num = randIndex(size - 1);
 
       this.setState({ text: deck[num].text });
@@ -59,7 +60,3 @@ export default class Card extends Component {
     );
   }
 }
-
-const randIndex = num => {
-  return Math.floor(Math.random() * num + 1);
-};

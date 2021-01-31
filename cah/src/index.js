@@ -5,21 +5,7 @@ import CardView from "./cardView";
 import reportWebVitals from "./reportWebVitals";
 import Hand from "./hand";
 import HandCard from "./handCard";
-/* import firebase from "firebase";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBDDohjZHShK-dbbS36JlbCLm-2mVkc-cg",
-  authDomain: "react-cah.firebaseapp.com",
-  projectId: "react-cah",
-  storageBucket: "react-cah.appspot.com",
-  messagingSenderId: "125556144304",
-  appId: "1:125556144304:web:a37e7b5c35c1e1428fa375",
-  measurementId: "G-YPJ51SQX3T"
-};
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-firebase.analytics();
- */
 class App extends React.Component {
   constructor() {
     super();

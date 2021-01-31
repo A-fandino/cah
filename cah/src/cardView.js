@@ -4,8 +4,8 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import Card from "./card";
 import firebase from "firebase";
-
 import get from "./getCard";
+import data from "./data";
 
 /* function getJson() {
   let aux;
@@ -28,7 +28,7 @@ import get from "./getCard";
 } */
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBDDohjZHShK-dbbS36JlbCLm-2mVkc-cg",
+  apiKey: data.key,
   authDomain: "react-cah.firebaseapp.com",
   projectId: "react-cah",
   storageBucket: "react-cah.appspot.com",
