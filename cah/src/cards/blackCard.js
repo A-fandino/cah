@@ -1,17 +1,8 @@
 import React, { Component } from "react";
-import icon from "./img/cah-icon.png";
-import get from "./getCard";
-import randIndex from "./random";
-import { STATUS_CODES } from "http";
-const width = 250;
-const height = width / 0.716;
-const style = {
-  cards: {
-    width,
-    height
-  },
-  img: { width: 15, marginRight: 5 }
-};
+import icon from "../img/cah-icon.png";
+import get from "../getCard";
+import randIndex from "../random";
+import style from "./styles";
 
 export default class Card extends Component {
   state = {
@@ -25,10 +16,10 @@ export default class Card extends Component {
       let deck;
       let set = this.state.set;
       let size = -1;
-      if (this.props.color === "white") {
-        deck = val[set].white;
-      } else {
+      if (this.props.color === "black") {
         deck = val[set].black;
+      } else {
+        deck = val[set].white;
       }
       let key = {};
       for (key in deck) {
@@ -42,13 +33,8 @@ export default class Card extends Component {
     });
   }
   render() {
-    let divClass = "card " + this.props.color + "-card";
-    let imgClass = "";
-
-    if (this.props.color === "black") {
-      imgClass += "invert";
-    }
-
+    let divClass = "card black-card";
+    let imgClass = "invert";
     return (
       <div style={style.cards} className={divClass}>
         <span className="card-header">{this.state.text}</span>

@@ -4,7 +4,7 @@ import "./index.css";
 import CardView from "./cardView";
 import reportWebVitals from "./reportWebVitals";
 import Hand from "./hand";
-import HandCard from "./handCard";
+import firebase from "firebase";
 
 class App extends React.Component {
   constructor() {
@@ -14,21 +14,17 @@ class App extends React.Component {
     };
   }
 
-  /* componentWillMount() {
-    const nameRef = firebase
+  componentDidMount() {
+    const data = firebase
       .database()
       .ref()
-      .child("object")
-      .child("name");
+      .child("games")
+      .child("0000")
+      .child("p1")
+      .child("card");
 
-    console.log(nameRef);
-
-    nameRef.on("value", snapshot => {
-      this.setState({
-        name: snapshot.val()
-      });
-    });
-  } */
+    data.set("");
+  }
 
   render() {
     return (

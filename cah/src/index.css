@@ -80,3 +80,7 @@ body {
 .handCard:hover .overview {
   display: block;
 }
+
+.hide {
+  display: none;
+}

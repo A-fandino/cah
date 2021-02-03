@@ -1,40 +1,18 @@
 import React, { Component } from "react";
 import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import Card from "./card";
-import firebase from "firebase";
-import get from "./getCard";
+import Black from "./cards/blackCard";
+import White from "./cards/whiteCard";
 import data from "./data";
-
-/* function getJson() {
-  let aux;
-  get().then(function(val) {
-    return val;
-  });
-} */
-
-/* export default function CardView() {
-  return (
-    <React.Fragment>
-      <Card color={"white"}>
-        Talking about the size of your penis on live TV.
-      </Card>
-      <Card color={"black"}>
-        Talking about the size of your penis on live TV.
-      </Card>
-    </React.Fragment>
-  );
-} */
+import firebase from "firebase";
 
 const firebaseConfig = {
   apiKey: data.key,
-  authDomain: "react-cah.firebaseapp.com",
-  projectId: "react-cah",
-  storageBucket: "react-cah.appspot.com",
-  messagingSenderId: "125556144304",
-  appId: "1:125556144304:web:a37e7b5c35c1e1428fa375",
-  measurementId: "G-YPJ51SQX3T"
+  authDomain: data.authDomain,
+  projectId: data.projectId,
+  storageBucket: data.storageBucket,
+  messagingSenderId: data.messagingSenderId,
+  appId: data.appId,
+  measurementId: data.measurementId
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -52,9 +30,10 @@ class CardView extends Component {
     const nameRef = firebase
       .database()
       .ref()
-      .child("object")
-      .child("name");
-
+      .child("games")
+      .child("0000")
+      .child("p1")
+      .child("card");
     console.log(nameRef);
 
     nameRef.on("value", snapshot => {
@@ -66,9 +45,8 @@ class CardView extends Component {
   render() {
     return (
       <React.Fragment>
-        <h1>{this.state.name}</h1>
-        <Card color={"black"}></Card>
-        <Card color={"white"}></Card>
+        <Black />
+        <White>{this.state.name}</White>
       </React.Fragment>
     );
   }
