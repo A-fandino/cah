@@ -29,6 +29,7 @@ class App extends React.Component {
   render() {
     return (
       <React.StrictMode>
+        <h1>a</h1>
         <CardView />
         <Hand />
       </React.StrictMode>
