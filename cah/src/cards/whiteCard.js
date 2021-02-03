@@ -16,7 +16,7 @@ export default class Card extends Component {
         <span className="card-header">{this.props.children}</span>
         <div className="card-bottom">
           <img style={style.img} src={icon} />
-          <span>{this.props.children}</span>
+          <span>{this.props.set}</span>
         </div>
       </div>
     );

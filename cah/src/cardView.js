@@ -32,13 +32,13 @@ class CardView extends Component {
       .ref()
       .child("games")
       .child("0000")
-      .child("p1")
-      .child("card");
+      .child("p1");
     console.log(nameRef);
 
     nameRef.on("value", snapshot => {
       this.setState({
-        name: snapshot.val()
+        name: snapshot.child("card").val(),
+        set: snapshot.child("set").val()
       });
     });
   }
@@ -46,7 +46,7 @@ class CardView extends Component {
     return (
       <React.Fragment>
         <Black />
-        <White>{this.state.name}</White>
+        <White set={this.state.set}>{this.state.name}</White>
       </React.Fragment>
     );
   }

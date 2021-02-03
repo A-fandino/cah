@@ -8,8 +8,7 @@ const nameRef = firebase
   .ref()
   .child("games")
   .child("0000")
-  .child("p1")
-  .child("card");
+  .child("p1");
 
 export default class Card extends Component {
   state = {
@@ -43,7 +42,8 @@ export default class Card extends Component {
   }
 
   handleClick() {
-    nameRef.set(this.state.text);
+    nameRef.child("card").set(this.state.text);
+    nameRef.child("set").set(this.state.setText);
   }
 
   render() {

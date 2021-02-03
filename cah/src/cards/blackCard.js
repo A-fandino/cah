@@ -13,14 +13,9 @@ export default class Card extends Component {
 
   componentDidMount() {
     get().then(async val => {
-      let deck;
       let set = this.state.set;
+      let deck = val[set].black;
       let size = -1;
-      if (this.props.color === "black") {
-        deck = val[set].black;
-      } else {
-        deck = val[set].white;
-      }
       let key = {};
       for (key in deck) {
         if (deck.hasOwnProperty(key)) size++;
