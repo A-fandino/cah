@@ -15,38 +15,58 @@ const firebaseConfig = {
   measurementId: data.measurementId
 };
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+} else {
+  firebase.app(); // if already initialized, use that one
+}
 firebase.analytics();
 
 class CardView extends Component {
   constructor() {
     super();
     this.state = {
-      name: ""
+      whiteName: "",
+      whiteSet: "",
+      blackName: "",
+      blackSet: ""
     };
   }
 
-  componentWillMount() {
-    const nameRef = firebase
+  componentDidMount() {
+    const whiteCard = firebase
       .database()
       .ref()
       .child("games")
       .child("0000")
       .child("p1");
-    console.log(nameRef);
 
-    nameRef.on("value", snapshot => {
+    const blackCard = firebase
+      .database()
+      .ref()
+      .child("games")
+      .child("0000")
+      .child("blackCard");
+
+    whiteCard.on("value", snapshot => {
       this.setState({
-        name: snapshot.child("card").val(),
-        set: snapshot.child("set").val()
+        whiteName: snapshot.child("card").val(),
+        whiteSet: snapshot.child("set").val()
+      });
+    });
+
+    blackCard.on("value", snapshot => {
+      this.setState({
+        blackName: snapshot.child("text").val(),
+        blackSet: snapshot.child("set").val()
       });
     });
   }
   render() {
     return (
       <React.Fragment>
-        <Black />
-        <White set={this.state.set}>{this.state.name}</White>
+        <Black set={this.state.blackSet}>{this.state.blackName}</Black>
+        <White set={this.state.whiteSet}>{this.state.whiteName}</White>
       </React.Fragment>
     );
   }

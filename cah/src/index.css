@@ -84,3 +84,18 @@ body {
 .hide {
   display: none;
 }
+
+.picks {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 200px;
+  background: #2b2b2b;
+  color: #fff;
+  text-align: left;
+  font-size: 25px;
+  padding: 20px;
+  border-bottom-left-radius: 75px;
+  font-weight: bold;
+  padding: 10px 45px 20px 45px;
+}
