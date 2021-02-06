@@ -1,14 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import CardView from "./game/cardView";
-import reportWebVitals from "./reportWebVitals";
-import Hand from "./game/hand";
-import firebase from "firebase";
-import get from "./game/getCard";
-import randIndex from "./random";
-import Pick from "./game/pick";
-
+//import reportWebVitals from "./reportWebVitals";
+import {BrowserRouter as Router, Switch, Route} from "react-router-dom"
+import Game from "./game/index"
+import Join from "./join"
 class App extends React.Component {
   constructor() {
     super();
@@ -17,53 +13,17 @@ class App extends React.Component {
     };
   }
 
-  componentDidMount() {
-    const whiteData = firebase
-      .database()
-      .ref()
-      .child("games")
-      .child("0000")
-      .child("p1")
-      .child("card");
-
-    whiteData.set("");
-    get().then(async val => {
-      const blackData = firebase
-        .database()
-        .ref()
-        .child("games")
-        .child("0000")
-        .child("blackCard");
-      let set = randIndex(70);
-      let deck = val[set].black;
-      let size = -1;
-      let key = {};
-      for (key in deck) {
-        if (deck.hasOwnProperty(key)) size++;
-      }
-      //console.log(val);
-      let num = randIndex(size - 1);
-
-      blackData.child("text").set(deck[num].text);
-      blackData.child("set").set(val[set].name);
-      blackData.child("picks").set(deck[num].pick);
-    });
-  }
 
   render() {
     return (
-      <React.StrictMode>
-        <CardView />
-        <Pick />
-        <Hand />
-      </React.StrictMode>
+      <Router>
+        <Switch>
+          <Route path="/" exact component = {Join} />
+          <Route path="/game" exact component ={Game} />
+        </Switch>
+      </Router>
     );
   }
 }
 
 ReactDOM.render(<App />, document.getElementById("root"));
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

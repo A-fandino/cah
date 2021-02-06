@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-//import "./index.css";
-import Black from "./cards/blackCard";
-import White from "./cards/whiteCard";
+import Card from "./cards/whiteCard";
 import data from "./data";
 import firebase from "firebase";
 
@@ -65,8 +63,8 @@ class CardView extends Component {
   render() {
     return (
       <React.Fragment>
-        <Black set={this.state.blackSet}>{this.state.blackName}</Black>
-        <White set={this.state.whiteSet}>{this.state.whiteName}</White>
+        <Card set={this.state.blackSet} color="black">{this.state.blackName}</Card>
+        <Card set={this.state.whiteSet} color="white">{this.state.whiteName}</Card>
       </React.Fragment>
     );
   }
