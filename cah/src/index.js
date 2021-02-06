@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import CardView from "./cardView";
+import CardView from "./game/cardView";
 import reportWebVitals from "./reportWebVitals";
-import Hand from "./hand";
+import Hand from "./game/hand";
 import firebase from "firebase";
-import get from "./getCard";
+import get from "./game/getCard";
 import randIndex from "./random";
-import Pick from "./pick";
+import Pick from "./game/pick";
 
 class App extends React.Component {
   constructor() {

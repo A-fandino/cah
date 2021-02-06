@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import get from "./getCard";
-import randIndex from "./random";
+import randIndex from "../random";
 import firebase from "firebase";
 
 const nameRef = firebase

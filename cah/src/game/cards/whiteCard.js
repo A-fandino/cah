@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import icon from "../img/cah-icon.png";
+import icon from "../cah-icon.png";
 import style from "./styles";
 
 export default class Card extends Component {
@@ -9,7 +9,7 @@ export default class Card extends Component {
     if (this.props.children === "") {
       hideClass = " hide";
     } else {
-      hideClass = "";
+      hideClass = ""
     }
     return (
       <div style={style.cards} className={divClass + hideClass}>

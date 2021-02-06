@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./index.css";
+//import "./index.css";
 import Black from "./cards/blackCard";
 import White from "./cards/whiteCard";
 import data from "./data";
