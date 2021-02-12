@@ -1,24 +1,8 @@
 import React, { Component } from "react";
 import Card from "./cards/whiteCard";
-import data from "./data";
-import firebase from "firebase";
+import gameAccess from "./accessFb"
 
-const firebaseConfig = {
-  apiKey: data.key,
-  authDomain: data.authDomain,
-  projectId: data.projectId,
-  storageBucket: data.storageBucket,
-  messagingSenderId: data.messagingSenderId,
-  appId: data.appId,
-  measurementId: data.measurementId
-};
-// Initialize Firebase
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-} else {
-  firebase.app(); // if already initialized, use that one
-}
-firebase.analytics();
+
 
 class CardView extends Component {
   constructor() {
@@ -32,20 +16,9 @@ class CardView extends Component {
   }
 
   componentDidMount() {
-    const whiteCard = firebase
-      .database()
-      .ref()
-      .child("games")
-      .child("0000")
-      .child("p1");
+    const whiteCard = gameAccess({gameId: "0000", color: "white", player: "p1"})
 
-    const blackCard = firebase
-      .database()
-      .ref()
-      .child("games")
-      .child("0000")
-      .child("blackCard");
-
+    const blackCard = gameAccess({gameId: "0000", color: "black"})
     whiteCard.on("value", snapshot => {
       this.setState({
         whiteName: snapshot.child("card").val(),

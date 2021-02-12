@@ -1,14 +1,9 @@
 import React, { Component } from "react";
 import get from "./getCard";
 import randIndex from "../random";
-import firebase from "firebase";
+import gameAccess from "./accessFb";
 
-const nameRef = firebase
-  .database()
-  .ref()
-  .child("games")
-  .child("0000")
-  .child("p1");
+const nameRef = gameAccess({gameId: "0000", color: "white", player: "p1"})
 
 export default class Card extends Component {
   state = {

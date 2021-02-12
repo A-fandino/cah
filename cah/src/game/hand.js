@@ -4,7 +4,7 @@ import HandCard from "./handCard";
 export default function Hand() {
   const cards = [];
   for (let f = 0; f < 10; f++) {
-    cards.push(<HandCard />);
+    cards.push(<HandCard key={f} />);
   }
 
   return <div className="hand">{cards}</div>;

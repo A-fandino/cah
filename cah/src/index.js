@@ -5,6 +5,7 @@ import "./index.css";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom"
 import Game from "./game/index"
 import Join from "./join"
+
 class App extends React.Component {
   constructor() {
     super();
@@ -19,7 +20,7 @@ class App extends React.Component {
       <Router>
         <Switch>
           <Route path="/" exact component = {Join} />
-          <Route path="/game" exact component ={Game} />
+          <Route path="/game/:id" exact component ={Game} />
         </Switch>
       </Router>
     );

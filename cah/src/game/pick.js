@@ -15,7 +15,6 @@ export default class Pick extends Component {
 
   componentDidMount() {
     pick.on("value", snapshot => {
-      console.log("aaaaaaaaaa", snapshot.val());
       this.setState({ num: snapshot.val() });
     });
   }

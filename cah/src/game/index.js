@@ -6,8 +6,11 @@ import firebase from "firebase";
 import get from "./getCard";
 import randIndex from "../random";
 import Pick from "./pick";
+import gameAccess from "./accessFb"
 
-class App extends React.Component {
+
+
+class App extends React.Component { 
   constructor() {
     super();
     this.state = {
@@ -16,13 +19,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    const whiteData = firebase
-      .database()
-      .ref()
-      .child("games")
-      .child("0000")
-      .child("p1")
-      .child("card")
+    const whiteData = gameAccess({gameId: "0000", color: "white", player: "p1"}).child("card")
 
     whiteData.set("");
     get().then(async val => {
@@ -61,7 +58,6 @@ class App extends React.Component {
 }
 
 export default App;
-
 //ReactDOM.render(<App />, document.getElementById("root"));
 
 // If you want to start measuring performance in your app, pass a function
