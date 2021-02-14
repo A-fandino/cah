@@ -16,9 +16,9 @@ class CardView extends Component {
   }
 
   componentDidMount() {
-    const whiteCard = gameAccess({gameId: "0000", color: "white", player: "p1"})
+    const whiteCard = gameAccess({gameId: this.props.game, color: "white", player: "p1"})
 
-    const blackCard = gameAccess({gameId: "0000", color: "black"})
+    const blackCard = gameAccess({gameId: this.props.game, color: "black"})
     whiteCard.on("value", snapshot => {
       this.setState({
         whiteName: snapshot.child("card").val(),

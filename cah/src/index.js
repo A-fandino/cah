@@ -4,7 +4,9 @@ import "./index.css";
 //import reportWebVitals from "./reportWebVitals";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom"
 import Game from "./game/index"
+import Create from "./create"
 import Join from "./join"
+import Nav from "./navBar"
 
 class App extends React.Component {
   constructor() {
@@ -18,10 +20,14 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-        <Switch>
-          <Route path="/" exact component = {Join} />
-          <Route path="/game/:id" exact component ={Game} />
-        </Switch>
+        <Nav/>
+        <div className="container">
+          <Switch>
+            <Route path="/" exact component = {Create} />
+            <Route path="/join" exact component = {Join} />
+            <Route path="/game/:id" exact component ={Game} />
+          </Switch>
+        </div>
       </Router>
     );
   }

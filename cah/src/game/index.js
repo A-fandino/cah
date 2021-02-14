@@ -2,7 +2,6 @@ import React from "react";
 //import "./index.css";
 import CardView from "./cardView";
 import Hand from "./hand";
-import firebase from "firebase";
 import get from "./getCard";
 import randIndex from "../random";
 import Pick from "./pick";
@@ -14,21 +13,16 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      name: ""
+      name: "",
     };
   }
 
   componentDidMount() {
-    const whiteData = gameAccess({gameId: "0000", color: "white", player: "p1"}).child("card")
+    const whiteData = gameAccess({gameId: this.props.match.params.id, color: "white", player: "p1"}).child("card")
 
     whiteData.set("");
     get().then(async val => {
-      const blackData = firebase
-        .database()
-        .ref()
-        .child("games")
-        .child("0000")
-        .child("blackCard");
+      const blackData = gameAccess({gameId: this.props.match.params.id, color: "black"})
       let set = randIndex(70);
       let deck = val[set].black;
       let size = -1;
@@ -49,9 +43,9 @@ class App extends React.Component {
   render() {
     return (
       <React.StrictMode>
-        <CardView />
-        <Pick />
-        <Hand />
+        <CardView game={this.props.match.params.id} />
+        <Pick game ={this.props.match.params.id} />
+        <Hand game={this.props.match.params.id} />
       </React.StrictMode>
     );
   }
