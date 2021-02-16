@@ -22,6 +22,7 @@ export default class Card extends Component {
     });
 
     let divClass = "card " + this.props.color + "-card";
+    console.log(divClass)
     let imgClass = "";
 
     if (this.props.color === "black") {

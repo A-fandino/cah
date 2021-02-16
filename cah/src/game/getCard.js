@@ -1,5 +1,5 @@
 export default function get() {
-  return fetch("deck.json").then(resp => resp.json());
+  return fetch("../deck.json").then(resp => resp.json());
 }
 
 /* const fetch = require("node-fetch");
