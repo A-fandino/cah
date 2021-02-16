@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Card from "./cards/whiteCard";
+import Card from "./cards/card";
 import gameAccess from "./accessFb"
 
 
@@ -25,6 +25,7 @@ class CardView extends Component {
         whiteSet: snapshot.child("set").val()
       });
     });
+
 
     blackCard.on("value", snapshot => {
       this.setState({

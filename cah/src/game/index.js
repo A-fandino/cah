@@ -34,9 +34,16 @@ class App extends React.Component {
       do {      
         num = randIndex(size - 1);
     	}	while(deck[num].pick !== 1) //THIS DO-WHILE WILL BE REMOVED WHEN THE DUAL PICK IS IMPLEMENTED
-      blackData.child("text").set(deck[num].text);
-      blackData.child("set").set(val[set].name);
-      blackData.child("picks").set(deck[num].pick);
+
+      blackData.on("value", snapshot => {
+        if(snapshot.child("selected").val() !== true) {
+          blackData.child("text").set(deck[num].text);
+          blackData.child("set").set(val[set].name);
+          blackData.child("picks").set(deck[num].pick);
+          blackData.child("selected").set(true)
+        }      
+      })
+
     });
   }
 

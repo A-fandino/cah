@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import firebase from "firebase";
 import gameAccess from "./accessFb"
 
 //import React, { useEffect } from 'react'
