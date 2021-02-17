@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import get from "./getCard";
 import randIndex from "../random";
 import gameAccess from "./accessFb";
+import icon from "./img/cah-icon.png";
+import style from "./cards/styles";
 
 export default class Card extends Component {
   constructor(props) {
@@ -34,7 +36,7 @@ export default class Card extends Component {
   }
 
   handleClick() {
-    let nameRef = gameAccess({gameId: this.props.game, color: "white", player: "p1"})
+    let nameRef = gameAccess({gameId: this.props.game, color: "white", player: this.props.player})
     nameRef.child("card").set(this.state.text);
     nameRef.child("set").set(this.state.setText);
   }
@@ -44,6 +46,10 @@ export default class Card extends Component {
       <div onClick={() => this.handleClick()} className="card handCard white-card">
         <div className="overview card white-card">
           <span className="card-header">{this.state.text}</span>
+          <div className="card-bottom">
+            <img style={style.img} src={icon} alt="|"/>
+            <span>{this.state.setText}</span>
+        </div>
         </div>
         <span className="card-header">{this.state.text}</span>
       </div>

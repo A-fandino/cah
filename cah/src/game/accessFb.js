@@ -21,6 +21,9 @@ firebase.analytics();
 
 export default function accessGame(obj) {
     let nameRef = firebase.database().ref().child("games").child(obj.gameId)
+    if(obj.color !== "white" && obj.color !== "black" && !obj.player) {
+      return nameRef
+    }
     if (obj.color === "white") {
         return nameRef = nameRef.child(obj.player);
 }
