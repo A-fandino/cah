@@ -2,30 +2,33 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 //import reportWebVitals from "./reportWebVitals";
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom"
-import Game from "./game/index"
-import Create from "./create"
-import Join from "./join"
-import Nav from "./navBar"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Game from "./game/index";
+import Create from "./create";
+import Join from "./join";
+import Nav from "./navBar";
+import Login from "./login";
+import Test from "./test";
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      name: ""
+      id: "",
     };
   }
-
 
   render() {
     return (
       <Router>
-        <Nav/>
+        <Nav />
         <div className="container">
           <Switch>
-            <Route path="/" exact component = {Create} />
-            <Route path="/join" exact component = {Join} />
-            <Route path="/game/:id" exact component ={Game} />
+            <Route path="/" exact component={Create} />
+            <Route path="/join" exact component={Join} />
+            <Route path="/game/:id" exact component={Game} />
+            <Route path="/login" exact component={Login} />
+            <Route path="/test" exact component={Test} />
           </Switch>
         </div>
       </Router>

@@ -1,5 +1,5 @@
 //Access to firebase
-import firebase from "firebase"
+import firebase from "firebase";
 import data from "./data";
 
 const firebaseConfig = {
@@ -9,7 +9,7 @@ const firebaseConfig = {
   storageBucket: data.storageBucket,
   messagingSenderId: data.messagingSenderId,
   appId: data.appId,
-  measurementId: data.measurementId
+  measurementId: data.measurementId,
 };
 // Initialize Firebase
 if (!firebase.apps.length) {
@@ -20,12 +20,17 @@ if (!firebase.apps.length) {
 firebase.analytics();
 
 export default function accessGame(obj) {
-  let nameRef = firebase.database().ref().child("games").child(obj.gameId)
-  if(obj.color !== "white" && obj.color !== "black" && !obj.player) {
-    return nameRef
+  let nameRef = firebase.database().ref().child("games").child(obj.gameId);
+  if (obj.color !== "white" && obj.color !== "black" && !obj.player) {
+    return nameRef;
   }
   if (obj.color === "white") {
-      return nameRef = nameRef.child(obj.player);
+    return (nameRef = nameRef.child(obj.player));
+  }
+  return nameRef.child("blackCard");
 }
-  return nameRef.child("blackCard")
+
+export function playerAccess() {
+  let nameRef = firebase.database().ref().child("players");
+  return nameRef;
 }
