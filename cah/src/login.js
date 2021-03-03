@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Cookies from "universal-cookie";
 import { playerAccess } from "./game/accessFb";
+import randIndex from "./random";
 
 export default class Login extends Component {
   constructor() {
@@ -14,8 +15,20 @@ export default class Login extends Component {
 
   login() {
     const cookies = new Cookies();
-    const players = playerAccess();
-    cookies.set("id", this.state.name, { path: "/" });
+    const playersList = playerAccess();
+    let snap;
+    playersList.on("value", (snapshot) => {
+      snap = snapshot.val();
+    });
+    console.log(snap);
+    let num;
+    do {
+      num = randIndex(1000);
+    } while (snap && num in snap);
+    const players = playerAccess().child(num);
+    players.set(this.state.name);
+    cookies.set("name", this.state.name, { path: "/" });
+    cookies.set("id", num, { path: "/" });
     window.location.href = "/";
   }
 

@@ -153,3 +153,51 @@ button:active {
   font-weight: bold;
   padding: 10px 45px 20px 45px;
 }
+
+.button {
+  background-color: #707070;
+  --blue: #91ccc2;
+  font-size: 1.5rem;
+  border: 2px solid white;
+  border-radius: 100px;
+  width: 60px;
+  height: 60px;
+  padding: 5px;
+  margin: 10% auto;
+  transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.icon {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+}
+
+.button:hover {
+  background-color: #555555;
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
+  color: var(--blue);
+  transition: 0.3s;
+  width: 140px;
+}
+
+.button:active {
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  transition: 0.05s;
+}
+.button img {
+  width: 20px;
+  display: inline;
+  margin: 0;
+  padding: 0;
+  transition: 0.5s;
+}
+.button:hover img {
+  filter: invert(1);
+}
+
+a:hover + p {
+  transition: 0.5s ease-in-out;
+  text-shadow: #454545 0px 3px 1px;
+}

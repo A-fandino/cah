@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Card from "./cards/card";
 import gameAccess from "./accessFb";
+import Cookies from "universal-cookie";
 
 class CardView extends Component {
   constructor() {
@@ -14,19 +15,21 @@ class CardView extends Component {
   }
 
   componentDidMount() {
+    const cookies = new Cookies();
     const whiteCard = gameAccess({
       gameId: this.props.game,
       color: "white",
-      player: "p1",
+      player: cookies.get("id"),
     });
 
-    const blackCard = gameAccess({ gameId: this.props.game, color: "black" });
     whiteCard.on("value", (snapshot) => {
       this.setState({
         whiteName: snapshot.child("card").val(),
         whiteSet: snapshot.child("set").val(),
       });
     });
+
+    const blackCard = gameAccess({ gameId: this.props.game, color: "black" });
 
     blackCard.on("value", (snapshot) => {
       this.setState({
