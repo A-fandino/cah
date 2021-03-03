@@ -14,9 +14,10 @@ export default class Login extends Component {
 
   login() {
     const cookies = new Cookies();
-    const players = playerAccess();
+    const players = playerAccess().child(1);
+    players.set(this.state.name);
     cookies.set("id", this.state.name, { path: "/" });
-    window.location.href = "/";
+    //window.location.href = "/";
   }
 
   render() {
