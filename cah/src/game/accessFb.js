@@ -33,6 +33,5 @@ export default function accessGame(obj) {
 
 export function playerAccess() {
   let nameRef = firebase.database().ref().child("players");
-  console.log("aaaaaaaaaaaa", nameRef);
   return nameRef;
 }

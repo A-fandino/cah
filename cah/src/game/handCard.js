@@ -2,21 +2,22 @@ import React, { Component } from "react";
 import get from "./getCard";
 import randIndex from "../random";
 import gameAccess from "./accessFb";
+import Cookies from "universal-cookie";
 
 export default class Card extends Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
   }
-  
+
   state = {
     set: randIndex(70),
     text: "",
-    setText: ""
+    setText: "",
   };
 
   componentDidMount() {
-    get().then(async val => {
+    get().then(async (val) => {
       let set = this.state.set;
       let deck = val[set].white;
       let size = -1;
@@ -34,14 +35,22 @@ export default class Card extends Component {
   }
 
   handleClick() {
-    let nameRef = gameAccess({gameId: this.props.game, color: "white", player: "p1"})
+    const cookies = new Cookies();
+    let nameRef = gameAccess({
+      gameId: this.props.game,
+      color: "white",
+      player: cookies.get("id"),
+    });
     nameRef.child("card").set(this.state.text);
     nameRef.child("set").set(this.state.setText);
   }
 
   render() {
     return (
-      <div onClick={() => this.handleClick()} className="card handCard white-card">
+      <div
+        onClick={() => this.handleClick()}
+        className="card handCard white-card"
+      >
         <div className="overview card white-card">
           <span className="card-header">{this.state.text}</span>
         </div>
