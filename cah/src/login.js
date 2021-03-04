@@ -20,7 +20,6 @@ export default class Login extends Component {
     playersList.on("value", (snapshot) => {
       snap = snapshot.val();
     });
-    console.log(snap);
     let num;
     do {
       num = randIndex(1000);
