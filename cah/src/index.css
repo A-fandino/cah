@@ -201,3 +201,57 @@ a:hover + p {
   transition: 0.5s ease-in-out;
   text-shadow: #454545 0px 3px 1px;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#joinInput {
+  -moz-appearance: textfield;
+  border-radius: 999px;
+  width: 120px;
+  /* padding: 10px 20px; */
+  background: #909090;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+#joinInput:hover {
+  background-color: #888888;
+}
+
+#joinInput:focus {
+  background-color: #999999;
+}
+
+#joinButton {
+  background-color: #707070;
+  border-top-right-radius: 100px;
+  border-bottom-right-radius: 100px;
+}
+#joinButton:hover {
+  background-color: #555555;
+}
+
+#joinButton:active {
+  box-shadow: 2px 2px 0px black, inset 0px 0 8px 0px #00000073;
+}
+
+#joinInput,
+#joinButton {
+  transition: 0.5s;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  padding: 0 20px;
+  height: 30px;
+  outline: none;
+  /* padding: 10px 20px; */
+  text-align: center;
+  font-size: 17px;
+  border: 0;
+  box-shadow: 0px 2px 2px 0px black;
+  margin-bottom: 10px;
+}
