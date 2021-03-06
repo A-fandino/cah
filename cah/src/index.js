@@ -8,7 +8,6 @@ import Create from "./create";
 import Join from "./join";
 import Nav from "./navBar";
 import Login from "./login";
-import Test from "./test";
 
 class App extends React.Component {
   constructor() {
@@ -28,7 +27,6 @@ class App extends React.Component {
             <Route path="/join" exact component={Join} />
             <Route path="/game/:id" exact component={Game} />
             <Route path="/login" exact component={Login} />
-            <Route path="/test" exact component={Test} />
           </Switch>
         </div>
       </Router>
