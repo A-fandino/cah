@@ -10,7 +10,6 @@ export default class Card extends Component {
     if (this.props.color === "white" && !this.props.children) {
       hideClass = " hide";
     }
-    console.log("Content", this.props.children);
     if (this.props.color === "black") {
       imgClass = "invert";
     }

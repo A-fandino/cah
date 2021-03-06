@@ -8,8 +8,8 @@ export default function create() {
       <h1>Welcome to Cards Against Humanity</h1>
       {/*<button className="create-button">Create Game</button>*/}
       <Link to={`/game/${randIndex(9999)}`}>
-        <div class="button">
-          <div class="icon">
+        <div className="button">
+          <div className="icon">
             <img src="play.png" alt="a"></img>
           </div>
         </div>

@@ -43,6 +43,7 @@ export default class Card extends Component {
     });
     nameRef.child("card").set(this.state.text);
     nameRef.child("set").set(this.state.setText);
+    this.componentDidMount();
   }
 
   render() {

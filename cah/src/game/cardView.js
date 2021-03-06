@@ -1,40 +1,43 @@
 import React, { Component } from "react";
 import Card from "./cards/card";
 import gameAccess from "./accessFb";
-import Cookies from "universal-cookie";
 
 class CardView extends Component {
   constructor() {
     super();
     this.state = {
-      whiteName: "",
-      whiteSet: "",
       blackName: "",
       blackSet: "",
+      whiteCards: [],
     };
   }
 
   componentDidMount() {
-    const cookies = new Cookies();
+    let cardsObj;
     const whiteCard = gameAccess({
       gameId: this.props.game,
-      color: "white",
-      player: cookies.get("id"),
     });
-
+    let blackCard = [];
     whiteCard.on("value", (snapshot) => {
+      cardsObj = [];
+      const values = snapshot.val();
+      for (let key in values) {
+        const curr = values[key];
+        if (key !== "blackCard") {
+          cardsObj.push(
+            <Card key={key} set={curr.set} color="white">
+              {curr.card}
+            </Card>
+          );
+        } else {
+          blackCard = [curr.text, curr.set];
+        }
+      }
+      console.log(cardsObj);
       this.setState({
-        whiteName: snapshot.child("card").val(),
-        whiteSet: snapshot.child("set").val(),
-      });
-    });
-
-    const blackCard = gameAccess({ gameId: this.props.game, color: "black" });
-
-    blackCard.on("value", (snapshot) => {
-      this.setState({
-        blackName: snapshot.child("text").val(),
-        blackSet: snapshot.child("set").val(),
+        blackName: blackCard[0],
+        blackSet: blackCard[1],
+        whiteCards: cardsObj,
       });
     });
   }
@@ -44,9 +47,7 @@ class CardView extends Component {
         <Card set={this.state.blackSet} color="black">
           {this.state.blackName}
         </Card>
-        <Card set={this.state.whiteSet} color="white">
-          {this.state.whiteName}
-        </Card>
+        {this.state.whiteCards.map((card) => card)}
       </React.Fragment>
     );
   }
