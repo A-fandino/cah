@@ -33,7 +33,6 @@ class CardView extends Component {
           blackCard = [curr.text, curr.set];
         }
       }
-      console.log(cardsObj);
       this.setState({
         blackName: blackCard[0],
         blackSet: blackCard[1],

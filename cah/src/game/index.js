@@ -14,17 +14,35 @@ class App extends React.Component {
     super();
     this.state = {
       name: "",
+      leader: false,
     };
   }
 
   componentDidMount() {
+    const cookies = new Cookies();
+    const id = cookies.get("id");
+    const game = gameAccess({ gameId: this.props.match.params.id });
+
+    game.on("value", async (snapshot) => {
+      //Set current player to "leader" if the game is new
+      if (!snapshot.child("leader").exists()) {
+        game.child("leader").set(id);
+      }
+
+      if (snapshot.child("leader").val() === id) {
+        this.setState({ leader: true });
+      }
+    });
+
+    //Manages current's player white card data
     const whiteData = gameAccess({
       gameId: this.props.match.params.id,
       color: "white",
-      player: "p1",
+      player: id,
     }).child("card");
-
     whiteData.set("");
+
+    //Retrives a cards from /public/deck.json
     get().then(async (val) => {
       const blackData = gameAccess({
         gameId: this.props.match.params.id,
@@ -42,6 +60,7 @@ class App extends React.Component {
         num = randIndex(size - 1);
       } while (deck[num].pick !== 1); //THIS DO-WHILE WILL BE REMOVED WHEN THE DUAL PICK IS IMPLEMENTED
 
+      //Creates a black card if it not exists
       blackData.on("value", (snapshot) => {
         if (snapshot.child("selected").val() !== true) {
           blackData.child("text").set(deck[num].text);
@@ -62,6 +81,7 @@ class App extends React.Component {
           <CardView game={this.props.match.params.id} />
           <Pick game={this.props.match.params.id} />
           <Hand game={this.props.match.params.id} />
+          {this.state.leader ? "leader" : "player"}
         </React.StrictMode>
       );
     }
