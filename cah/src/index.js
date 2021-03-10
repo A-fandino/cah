@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 //import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Game from "./game/index";
+import Game from "./game/game";
 import Create from "./create";
 import Join from "./join";
 import Nav from "./navBar";
