@@ -49,22 +49,20 @@ class App extends React.Component {
         gameId: this.props.match.params.id,
         color: "black",
       });
-      let set = randIndex(70);
-      let deck = val[set].black;
-      let size = -1;
-      let key = {};
-      for (key in deck) {
-        if (deck.hasOwnProperty(key)) size++;
-      }
-      let num;
-      do {
-        num = randIndex(size - 1);
-      } while (deck[num].pick !== 1); //THIS DO-WHILE WILL BE REMOVED WHEN THE DUAL PICK IS IMPLEMENTED
+      blackData.child("selected").on("value", (snapshot) => {
+        if (snapshot.val() === false && this.state.leader) {
+          let set = randIndex(70);
+          let deck = val[set].black;
+          let size = -1;
+          let key = {};
+          for (key in deck) {
+            if (deck.hasOwnProperty(key)) size++;
+          }
+          let num;
+          do {
+            num = randIndex(size - 1);
+          } while (deck[num].pick !== 1); //THIS DO-WHILE WILL BE REMOVED WHEN THE DUAL PICK IS IMPLEMENTED
 
-      //Creates a black card if it not exists
-
-      blackData.on("value", (snapshot) => {
-        if (snapshot.child("selected").val() !== true) {
           blackData.child("selected").set(true);
           blackData.child("text").set(deck[num].text);
           blackData.child("set").set(val[set].name);
