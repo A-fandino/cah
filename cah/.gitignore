@@ -4,7 +4,12 @@
 /node_modules
 /.pnp
 .pnp.js
-src/data.js
+
+#Project
+src/game/data.js
+.eslintcache
+src/test.js
+../debug.log
 
 
 # testing
