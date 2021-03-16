@@ -27,10 +27,12 @@ export default function Login() {
     <div className="centered-container">
       <h1>Login</h1>
       <input
+        id="unifiedInput"
         type="text"
         onChange={(event) => setName(event.target.value)}
       ></input>
       <button
+        id="unifiedButton"
         onClick={() => {
           login();
         }}
