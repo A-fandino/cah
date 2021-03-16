@@ -4,7 +4,7 @@ import randIndex from "./random";
 import React, { useState } from "react";
 
 export default function Login() {
-  const [name, useName] = useState("");
+  const [name, setName] = useState("");
   function login() {
     const cookies = new Cookies();
     const playersList = playerAccess();
@@ -22,16 +22,13 @@ export default function Login() {
     cookies.set("id", num, { path: "/" });
     window.location.href = "/";
   }
-  function UpdateName(val) {
-    useName(val);
-  }
 
   return (
     <div className="centered-container">
       <h1>Login</h1>
       <input
         type="text"
-        onChange={(event) => UpdateName(event.target.value)}
+        onChange={(event) => setName(event.target.value)}
       ></input>
       <button
         onClick={() => {
