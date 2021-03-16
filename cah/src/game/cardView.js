@@ -1,6 +1,6 @@
-import React, { Component } from "react";
 import Card from "./cards/card";
 import gameAccess from "./accessFb";
+import React, { Component } from "react";
 
 class CardView extends Component {
   constructor() {
@@ -33,7 +33,6 @@ class CardView extends Component {
           blackCard = [curr.text, curr.set];
         }
       }
-      console.log(cardsObj);
       this.setState({
         blackName: blackCard[0],
         blackSet: blackCard[1],
@@ -54,3 +53,50 @@ class CardView extends Component {
 }
 
 export default CardView;
+
+/* import React, { useState, useEffect } from "react"; //TOO SLOW
+export default function CardView(props) {
+  const [blackName, setBlackName] = useState("");
+  const [blackSet, setBlackSet] = useState("");
+  const [whiteCards, setWhiteCards] = useState([]);
+
+  useEffect(() => {
+    let cardsObj;
+    const whiteCard = gameAccess({
+      gameId: props.game,
+    });
+    let blackCard = [];
+    whiteCard.on("value", (snapshot) => {
+      cardsObj = [];
+      const values = snapshot.val();
+      for (let key in values) {
+        const curr = values[key];
+        if (key !== "blackCard") {
+          cardsObj.push(
+            <Card key={key} set={curr.set} color="white">
+              {curr.card}
+            </Card>
+          );
+        } else {
+          blackCard = [curr.text, curr.set];
+        }
+      }
+      setBlackName(blackCard[0]);
+      setBlackSet(blackCard[1]);
+      setWhiteCards(cardsObj);
+    });
+  });
+
+   function pushState(setArray, val) {
+    setArray((old) => [...old, val]);
+  }
+
+  return (
+    <React.Fragment>
+      <Card set={blackSet} color="black">
+        {blackName}
+      </Card>
+      {whiteCards.map((card) => card)}
+    </React.Fragment>
+  );
+} */
