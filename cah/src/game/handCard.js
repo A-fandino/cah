@@ -1,9 +1,55 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import get from "./getCard";
 import randIndex from "../random";
 import gameAccess from "./accessFb";
 import Cookies from "universal-cookie";
 
+export default function HandCard(props) {
+  const [text, setText] = useState("");
+  const [setName, setSetName] = useState("");
+  const cookies = new Cookies();
+  useEffect(() => {
+    CardValue();
+  }, []);
+
+  function CardValue() {
+    get().then((val) => {
+      let set = randIndex(70);
+      let deck = val[set].white;
+      let size = -1;
+      let key = {};
+      for (key in deck) {
+        if (deck.hasOwnProperty(key)) size++;
+      }
+      //console.log(val);
+      let num = randIndex(size - 1);
+      setText(deck[num].text);
+      setSetName(val[set].name);
+    });
+  }
+
+  function handleClick() {
+    let nameRef = gameAccess({
+      gameId: props.game,
+      color: "white",
+      player: cookies.get("id"),
+    });
+    nameRef.child("card").set(text);
+    nameRef.child("set").set(setName);
+    CardValue();
+  }
+
+  return (
+    <div onClick={() => handleClick()} className="card handCard white-card">
+      <div className="overview card white-card">
+        <span className="card-header">{text}</span>
+      </div>
+      <span className="card-header">{text}</span>
+    </div>
+  );
+}
+
+/*
 export default class Card extends Component {
   constructor(props) {
     super(props);
@@ -59,37 +105,4 @@ export default class Card extends Component {
       </div>
     );
   }
-}
-
-/* export default function handCard() {
-  const [text, setText] = useState();
-  useEffect(() => {
-    get().then(val => {
-      let set = randIndex(70);
-      let deck = val[set].white;
-      let size = -1;
-      let key = {};
-      for (key in deck) {
-        if (deck.hasOwnProperty(key)) size++;
-      }
-      //console.log(val);
-      let num = randIndex(size - 1);
-      setText(prevText => (prevText = deck[num].text));
-    });
-  }, []);
-
-  return (
-    <div onClick={() => handleClick()} className="card handCard white-card">
-      <div className="overview card white-card">
-        <span className="card-header">
-          Seeing a saint statue in the neighbor's yard.Seeing a saint statue in
-          the neighbor's yard.
-        </span>
-      </div>
-      <span className="card-header">
-        Seeing a saint statue in the neighbor's yard.Seeing a saint statue in
-        the neighbor's yard.
-      </span>
-    </div>
-  );
-} */
+}*/
