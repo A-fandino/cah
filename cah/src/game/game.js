@@ -22,31 +22,33 @@ class App extends React.Component {
   componentDidMount() {
     const cookies = new Cookies();
     const id = cookies.get("id");
-    const game = gameAccess({ gameId: this.props.match.params.id });
+    if (id) {
+      const game = gameAccess({ gameId: this.props.match.params.id });
 
-    game.on("value", async (snapshot) => {
-      //Set current player to "leader" if the game is new
-      if (!snapshot.child("leader").exists()) {
-        game.child("leader").set(id);
-      }
+      game.on("value", async (snapshot) => {
+        //Set current player to "leader" if the game is new
+        if (!snapshot.child("leader").exists()) {
+          game.child("leader").set(id);
+        }
 
-      if (snapshot.child("leader").val() === id) {
-        this.generateBlackCard();
-        this.setState({ leader: true });
-      }
-    });
+        if (snapshot.child("leader").val() === id) {
+          this.generateBlackCard();
+          this.setState({ leader: true });
+        }
+      });
 
-    //Manages current's player white card data
-    const whiteData = gameAccess({
-      gameId: this.props.match.params.id,
-      color: "white",
-      player: id,
-    }).child("card");
-    whiteData.set("");
+      //Manages current's player white card data
+      const whiteData = gameAccess({
+        gameId: this.props.match.params.id,
+        color: "white",
+        player: id,
+      }).child("card");
+      whiteData.set("");
 
-    //Retrives a cards from /public/deck.json
+      //Retrives a cards from /public/deck.json
 
-    this.generateBlackCard();
+      this.generateBlackCard();
+    }
   }
 
   generateBlackCard() {
