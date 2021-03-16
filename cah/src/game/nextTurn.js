@@ -5,5 +5,9 @@ export default function NextTurn(props) {
     const game = gameAccess({ gameId: props.game });
     game.child("blackCard").child("selected").set(false);
   }
-  return <button onClick={handleClick}>Next turn</button>;
+  return (
+    <button id="nextTurn" onClick={handleClick}>
+      Next turn
+    </button>
+  );
 }
