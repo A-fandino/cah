@@ -31,6 +31,7 @@ class App extends React.Component {
       }
 
       if (snapshot.child("leader").val() === id) {
+        this.generateBlackCard();
         this.setState({ leader: true });
       }
     });
@@ -44,13 +45,18 @@ class App extends React.Component {
     whiteData.set("");
 
     //Retrives a cards from /public/deck.json
+
+    this.generateBlackCard();
+  }
+
+  generateBlackCard() {
     get().then(async (val) => {
       const blackData = gameAccess({
         gameId: this.props.match.params.id,
         color: "black",
       });
       blackData.child("selected").on("value", (snapshot) => {
-        if (snapshot.val() === false && this.state.leader) {
+        if (snapshot.val() !== true && this.state.leader) {
           let set = randIndex(70);
           let deck = val[set].black;
           let size = -1;
@@ -62,7 +68,6 @@ class App extends React.Component {
           do {
             num = randIndex(size - 1);
           } while (deck[num].pick !== 1); //THIS DO-WHILE WILL BE REMOVED WHEN THE DUAL PICK IS IMPLEMENTED
-
           blackData.child("selected").set(true);
           blackData.child("text").set(deck[num].text);
           blackData.child("set").set(val[set].name);
