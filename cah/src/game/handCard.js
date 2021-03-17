@@ -29,13 +29,22 @@ export default function HandCard(props) {
   }
 
   function handleClick() {
-    let nameRef = gameAccess({
+    let cards = gameAccess({
       gameId: props.game,
       color: "white",
       player: cookies.get("id"),
     });
-    nameRef.child("card").set(text);
-    nameRef.child("set").set(setName);
+    let oldCard;
+    cards.on("value", (snapshot) => {
+      oldCard = snapshot.child("card").val();
+    });
+    if (oldCard) {
+      alert("You selected a card already");
+      return;
+    }
+
+    cards.child("card").set(text);
+    cards.child("set").set(setName);
     CardValue();
   }
 

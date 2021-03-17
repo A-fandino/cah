@@ -14,6 +14,16 @@ function App(props) {
   const cookies = new Cookies();
   const id = cookies.get("id");
 
+  const whiteData = gameAccess({
+    gameId: props.match.params.id,
+  }).child("players");
+
+  const selfWhite = gameAccess({
+    gameId: props.match.params.id,
+    color: "white",
+    player: id,
+  }).child("card");
+
   const [leader, setLeader] = useState(false);
 
   useEffect(() => {
@@ -27,20 +37,15 @@ function App(props) {
         }
 
         if (snapshot.child("leader").val() === id) {
-          GenerateBlackCard();
+          //GenerateBlackCard();
           setLeader(true);
         }
       });
 
       //Manages current's player white card data
-      const whiteData = gameAccess({
-        gameId: props.match.params.id,
-        color: "white",
-        player: id,
-      }).child("card");
-      whiteData.set("");
+      selfWhite.set("");
 
-      //Retrives a cards from /public/deck.json
+      //Retrives a black card from /public/deck.json
 
       GenerateBlackCard();
     }
@@ -52,8 +57,10 @@ function App(props) {
         gameId: props.match.params.id,
         color: "black",
       });
+
       blackData.child("selected").on("value", (snapshot) => {
         if (snapshot.val() !== true && leader) {
+          whiteData.remove();
           let set = randIndex(70);
           let deck = val[set].black;
           let size = -1;
