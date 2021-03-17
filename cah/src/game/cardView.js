@@ -54,7 +54,7 @@ class CardView extends Component {
 
 export default CardView;
 
-/* import React, { useState, useEffect } from "react"; //TOO SLOW
+/* import React, { useState, useEffect } from "react"; //TOO SLOW**************************************
 export default function CardView(props) {
   const [blackName, setBlackName] = useState("");
   const [blackSet, setBlackSet] = useState("");

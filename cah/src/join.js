@@ -13,14 +13,14 @@ export default function Join() {
     <div className="centered-container">
       <h1>Join Game</h1>
       <input
-        id="joinInput"
+        id="unifiedInput"
         type="number"
         min="0"
         max="9999"
         onChange={handleChange}
       />
       <Link to={`game/${id}`}>
-        <button id="joinButton">Join</button>
+        <button id="unifiedButton">Join</button>
       </Link>
     </div>
   );
