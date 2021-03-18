@@ -15,7 +15,7 @@ export default function HandCard(props) {
   });
   const ctzar = gameAccess({
     gameId: props.game,
-  }).child("leader");
+  }).child("ctzar");
 
   useEffect(() => {
     CardValue();

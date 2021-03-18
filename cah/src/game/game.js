@@ -13,13 +13,8 @@ import { Redirect } from "react-router-dom";
 function App(props) {
   const cookies = new Cookies();
   const id = cookies.get("id");
-  let whiteData;
   let selfWhite;
   if (id) {
-    whiteData = gameAccess({
-      gameId: props.match.params.id,
-    }).child("players");
-
     selfWhite = gameAccess({
       gameId: props.match.params.id,
       color: "white",
@@ -54,6 +49,9 @@ function App(props) {
 
   function GenerateBlackCard() {
     get().then(async (val) => {
+      const whiteData = gameAccess({
+        gameId: props.match.params.id,
+      }).child("players");
       const blackData = gameAccess({
         gameId: props.match.params.id,
         color: "black",
