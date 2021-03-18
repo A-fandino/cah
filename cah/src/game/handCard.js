@@ -8,6 +8,15 @@ export default function HandCard(props) {
   const [text, setText] = useState("");
   const [setName, setSetName] = useState("");
   const cookies = new Cookies();
+  const cards = gameAccess({
+    gameId: props.game,
+    color: "white",
+    player: cookies.get("id"),
+  });
+  const ctzar = gameAccess({
+    gameId: props.game,
+  }).child("leader");
+
   useEffect(() => {
     CardValue();
   }, []);
@@ -21,23 +30,31 @@ export default function HandCard(props) {
       for (key in deck) {
         if (deck.hasOwnProperty(key)) size++;
       }
-      //console.log(val);
+
       let num = randIndex(size - 1);
       setText(deck[num].text);
       setSetName(val[set].name);
     });
   }
 
-  function handleClick() {
-    let cards = gameAccess({
-      gameId: props.game,
-      color: "white",
-      player: cookies.get("id"),
+  function getCtzar() {
+    let id;
+    ctzar.on("value", (snapshot) => {
+      id = snapshot.val();
     });
+    return id;
+  }
+
+  function isCtzar() {
+    return getCtzar() === cookies.get("id");
+  }
+
+  function handleClick() {
     let oldCard;
     cards.on("value", (snapshot) => {
       oldCard = snapshot.child("card").val();
     });
+
     if (oldCard) {
       alert("You selected a card already");
       return;
@@ -48,8 +65,16 @@ export default function HandCard(props) {
     CardValue();
   }
 
+  let disabledClass = "";
+  if (isCtzar()) {
+    disabledClass = "disabled";
+  }
+
   return (
-    <div onClick={() => handleClick()} className="card handCard white-card">
+    <div
+      onClick={() => handleClick()}
+      className={`card handCard white-card ${disabledClass}`}
+    >
       <div className="overview card white-card">
         <span className="card-header">{text}</span>
       </div>

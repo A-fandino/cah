@@ -276,3 +276,7 @@ input::-webkit-inner-spin-button {
   transform: scaleY(0.90);
   box-shadow: none;
 }
+.disabled {
+  pointer-events: none;
+  opacity: 0.75;
+}

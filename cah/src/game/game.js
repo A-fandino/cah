@@ -13,19 +13,20 @@ import { Redirect } from "react-router-dom";
 function App(props) {
   const cookies = new Cookies();
   const id = cookies.get("id");
+  let whiteData;
+  let selfWhite;
+  if (id) {
+    whiteData = gameAccess({
+      gameId: props.match.params.id,
+    }).child("players");
 
-  const whiteData = gameAccess({
-    gameId: props.match.params.id,
-  }).child("players");
-
-  const selfWhite = gameAccess({
-    gameId: props.match.params.id,
-    color: "white",
-    player: id,
-  }).child("card");
-
+    selfWhite = gameAccess({
+      gameId: props.match.params.id,
+      color: "white",
+      player: id,
+    }).child("card");
+  }
   const [leader, setLeader] = useState(false);
-
   useEffect(() => {
     if (id) {
       const game = gameAccess({ gameId: props.match.params.id });
