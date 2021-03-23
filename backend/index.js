@@ -9,24 +9,29 @@ const randIndex = (num) => {
   return Math.floor(Math.random() * num + 1);
 };
 
-app.get("/api", (req, res) => {
-  //randindex
-  const deck = getBlack(3);
+app.get("/api/black", (req, res) => {
+  const deck = getBlack();
   res.json(deck);
 });
-app.get("/api/:id", (req, res) => {
-  const deck = getSet(req.params.id);
-  res.json(deck);
+app.get("/api/white/:num", (req, res) => {
+  let num;
+  req.params.num > 0 ? (num = req.params.num) : (num = 1);
+  let cards = [];
+  for (let f = 0; f < num; f++) {
+    const deck = getWhite();
+    cards.push(deck);
+  }
+  res.json(cards);
 });
 
-function getSet(num = 0) {
+function getSet() {
   let rawdata = fs.readFileSync(path.resolve("src", "deck.json"));
   let student = JSON.parse(rawdata);
-  return student[num];
+  return student[randIndex(70)];
 }
 
-function getWhite(num = 0) {
-  const set = getSet(num);
+function getWhite() {
+  const set = getSet();
   const setName = set.name;
   const deck = set.white;
   let size = -1;
@@ -34,8 +39,8 @@ function getWhite(num = 0) {
   for (key in deck) {
     if (deck.hasOwnProperty(key)) size++;
   }
-  let card = randIndex(size - 1);
-  console.log(deck[card].text);
+  let card = randIndex(size);
+  return { text: deck[card].text, set: setName };
 }
 
 function getBlack(num = 0, color) {
@@ -51,7 +56,8 @@ function getBlack(num = 0, color) {
   do {
     card = randIndex(size - 1);
   } while (deck[card].pick !== 1); //THIS DO-WHILE WILL BE REMOVED WHEN THE DUAL PICK IS IMPLEMENTED
-  console.log(deck[card].text);
+
+  return { text: deck[card].text, set: setName, pick: deck[card].pick };
 }
 
 app.listen(port, () => console.log("Listening on port " + port));
