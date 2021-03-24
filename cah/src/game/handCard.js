@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import get from "./getCard";
-import randIndex from "../random";
 import gameAccess from "./accessFb";
 import Cookies from "universal-cookie";
 
@@ -22,19 +20,12 @@ export default function HandCard(props) {
   }, []);
 
   function CardValue() {
-    get().then((val) => {
-      let set = randIndex(70);
-      let deck = val[set].white;
-      let size = -1;
-      let key = {};
-      for (key in deck) {
-        if (deck.hasOwnProperty(key)) size++;
-      }
-
-      let num = randIndex(size - 1);
-      setText(deck[num].text);
-      setSetName(val[set].name);
-    });
+    fetch("/api/white/1")
+      .then((res) => res.json())
+      .then((resJson) => {
+        setText(resJson[0].text);
+        setSetName(resJson[0].set);
+      });
   }
 
   function getCtzar() {
