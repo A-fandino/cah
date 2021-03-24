@@ -276,3 +276,38 @@ input::-webkit-inner-spin-button {
   transform: scaleY(0.90);
   box-shadow: none;
 }
+.disabled {
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+
+::-moz-selection { /* Code for Firefox */
+  color: white;
+  background: black;
+}
+
+::selection {
+  color: gray;
+  background: none;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+
+}
+
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #1d1d1d;
+  transition: 1s;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #2b2b2b;
+}

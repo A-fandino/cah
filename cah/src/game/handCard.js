@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import get from "./getCard";
-import randIndex from "../random";
 import gameAccess from "./accessFb";
 import Cookies from "universal-cookie";
 
@@ -8,39 +6,66 @@ export default function HandCard(props) {
   const [text, setText] = useState("");
   const [setName, setSetName] = useState("");
   const cookies = new Cookies();
+  const cards = gameAccess({
+    gameId: props.game,
+    color: "white",
+    player: cookies.get("id"),
+  });
+  const ctzar = gameAccess({
+    gameId: props.game,
+  }).child("ctzar");
+
   useEffect(() => {
     CardValue();
   }, []);
 
   function CardValue() {
-    get().then((val) => {
-      let set = randIndex(70);
-      let deck = val[set].white;
-      let size = -1;
-      let key = {};
-      for (key in deck) {
-        if (deck.hasOwnProperty(key)) size++;
-      }
-      //console.log(val);
-      let num = randIndex(size - 1);
-      setText(deck[num].text);
-      setSetName(val[set].name);
+    fetch("/api/white/1")
+      .then((res) => res.json())
+      .then((resJson) => {
+        setText(resJson[0].text);
+        setSetName(resJson[0].set);
+      });
+  }
+
+  function getCtzar() {
+    let id;
+    ctzar.on("value", (snapshot) => {
+      id = snapshot.val();
     });
+    return id;
+  }
+
+  function isCtzar() {
+    return getCtzar() === cookies.get("id");
   }
 
   function handleClick() {
-    let nameRef = gameAccess({
-      gameId: props.game,
-      color: "white",
-      player: cookies.get("id"),
+    let oldCard;
+    cards.on("value", (snapshot) => {
+      oldCard = snapshot.child("card").val();
     });
-    nameRef.child("card").set(text);
-    nameRef.child("set").set(setName);
+
+    if (oldCard) {
+      alert("You selected a card already");
+      return;
+    }
+
+    cards.child("card").set(text);
+    cards.child("set").set(setName);
     CardValue();
   }
 
+  let disabledClass = "";
+  if (isCtzar()) {
+    disabledClass = "disabled";
+  }
+
   return (
-    <div onClick={() => handleClick()} className="card handCard white-card">
+    <div
+      onClick={() => handleClick()}
+      className={`card handCard white-card ${disabledClass}`}
+    >
       <div className="overview card white-card">
         <span className="card-header">{text}</span>
       </div>

@@ -14,25 +14,24 @@ class CardView extends Component {
 
   componentDidMount() {
     let cardsObj;
-    const whiteCard = gameAccess({
+    const cards = gameAccess({
       gameId: this.props.game,
     });
     let blackCard = [];
-    whiteCard.on("value", (snapshot) => {
+    cards.on("value", (snapshot) => {
       cardsObj = [];
-      const values = snapshot.val();
+      const values = snapshot.child("players").val();
       for (let key in values) {
         const curr = values[key];
-        if (key !== "blackCard") {
-          cardsObj.push(
-            <Card key={key} set={curr.set} color="white">
-              {curr.card}
-            </Card>
-          );
-        } else {
-          blackCard = [curr.text, curr.set];
-        }
+        cardsObj.push(
+          <Card key={key} set={curr.set} color="white">
+            {curr.card}
+          </Card>
+        );
       }
+      const black = snapshot.child("blackCard");
+      blackCard = [black.child("text").val(), black.child("set").val()];
+
       this.setState({
         blackName: blackCard[0],
         blackSet: blackCard[1],

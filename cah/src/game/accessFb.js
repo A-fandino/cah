@@ -25,7 +25,7 @@ export default function accessGame(obj) {
     return nameRef;
   }
   if (obj.color === "white") {
-    return (nameRef = nameRef.child(obj.player));
+    return (nameRef = nameRef.child("players").child(obj.player));
   }
   return nameRef.child("blackCard");
 }

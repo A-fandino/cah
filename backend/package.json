@@ -1,0 +1,24 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend for cah application",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/A-fandino/cah.git"
+  },
+  "author": "A-fandino",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/A-fandino/cah/issues"
+  },
+  "homepage": "https://github.com/A-fandino/cah#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
