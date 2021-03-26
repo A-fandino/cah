@@ -315,3 +315,22 @@ input::-webkit-inner-spin-button {
 ::-webkit-scrollbar-thumb:hover {
   background-color: #2b2b2b;
 }
+
+@media only screen and (max-width: 600px) {
+  #unifiedInput,
+  #unifiedButton {
+    border-radius: 0;
+    width: 55vw;
+    border-radius: 10px;
+  }
+
+  #unifiedInput {
+    height: 50px;
+    font-size: 30px;
+  }
+
+  #unifiedButton {
+    margin-top: 0px;
+    height: 40px;
+  }
+}
