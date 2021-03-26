@@ -18,30 +18,40 @@ function App(props) {
       player: id,
     }).child("card");
   }
-  const [leader, setLeader] = useState(false);
+
+  const [ctzar, setCtzar] = useState("");
+  const [leader, setLeader] = useState("");
+
+  useEffect(() => {
+    if (id) {
+      const game = gameAccess({ gameId: props.match.params.id });
+      game.on("value", async (snapshot) => {
+        //Set current player to "leader" if the game is new
+        if (!snapshot.child("leader").exists()) {
+          game.child("leader").set(id);
+          setLeader(id);
+        } else {
+          setLeader(snapshot.child("leader").val());
+        }
+      });
+    }
+    console.log(leader, leader === id);
+  }, []);
 
   useEffect(() => {
     if (id) {
       const game = gameAccess({ gameId: props.match.params.id });
 
       game.on("value", async (snapshot) => {
-        //Set current player to "leader" if the game is new
-        if (!snapshot.child("leader").exists()) {
-          game.child("leader").set(id);
-        }
-
-        if (snapshot.child("leader").val() === id) {
-          //GenerateBlackCard();
-          setLeader(true);
-        }
+        setCtzar(snapshot.child("ctzar").val());
       });
-
-      //Manages current's player white card data
       selfWhite.set("");
 
       //Retrives a black card from the backend
-
-      GenerateBlackCard();
+      if (leader === id) {
+        GenerateBlackCard();
+        CalcCtzar();
+      }
     }
   }); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -54,12 +64,14 @@ function App(props) {
       gameId: props.match.params.id,
       color: "black",
     });
+
     blackData.child("selected").on("value", (snapshot) => {
-      if (snapshot.val() !== true && leader) {
+      if (snapshot.val() !== true && leader === id) {
         fetch("/api/black")
           .then((res) => res.json())
           .then((resJson) => {
             if (resJson) {
+              console.log("a");
               whiteData.remove();
               blackData.child("selected").set(true);
               blackData.child("text").set(resJson.text);
@@ -71,13 +83,15 @@ function App(props) {
     });
   }
 
+  function CalcCtzar() {}
+
   if (id) {
     return (
       <React.StrictMode>
         <CardView game={props.match.params.id} />
         <Pick game={props.match.params.id} />
         <Hand game={props.match.params.id} />
-        {leader ? <NextTurn game={props.match.params.id} /> : "player"}
+        {leader === id ? <NextTurn game={props.match.params.id} /> : "player"}
       </React.StrictMode>
     );
   }
