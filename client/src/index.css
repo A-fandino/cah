@@ -119,6 +119,7 @@ button:active {
   width: var(--size);
   height: var(--size);
   --size: 170px;
+  cursor: grab;
 }
 
 .overview {
@@ -133,6 +134,9 @@ button:active {
 }
 .handCard:hover .overview {
   display: block;
+}
+.handCard:active {
+  cursor: grabbing !important;
 }
 
 .hide {
@@ -270,10 +274,10 @@ input::-webkit-inner-spin-button {
 }
 
 #nextTurn:hover {
-  transform: scaleY(0.95); 
+  transform: scaleY(0.95);
 }
-#nextTurn:active{
-  transform: scaleY(0.90);
+#nextTurn:active {
+  transform: scaleY(0.9);
   box-shadow: none;
 }
 .disabled {
@@ -281,8 +285,8 @@ input::-webkit-inner-spin-button {
   opacity: 0.75;
 }
 
-
-::-moz-selection { /* Code for Firefox */
+::-moz-selection {
+  /* Code for Firefox */
   color: white;
   background: black;
 }
@@ -292,11 +296,11 @@ input::-webkit-inner-spin-button {
   background: none;
 }
 
+/* Scrollbar */
+
 ::-webkit-scrollbar {
   width: 10px;
-
 }
-
 
 /* Track */
 ::-webkit-scrollbar-track {
