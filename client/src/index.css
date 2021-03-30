@@ -47,6 +47,21 @@ nav a:active {
   background-color: #2b2b2b;
 }
 
+.bubble {
+  position: fixed;
+  transition: transform 0.2s;
+  --dist: 15px;
+}
+
+.br-corner {
+  bottom: var(--dist);
+  right: var(--dist);
+}
+
+.bubble:hover {
+  transform: scale(0.95);
+}
+
 .create-button {
   padding: 25px 50px;
   border: 0;

@@ -8,6 +8,7 @@ import Join from "./join";
 import Nav from "./navBar";
 import Login from "./login";
 import Lobby from "./lobby";
+import ghlogo from "./game/img/github/GitHub-Mark-64px.png";
 /* import Test from "./test"; */
 
 function App() {
@@ -23,6 +24,9 @@ function App() {
           <Route path="/login" exact component={Login} />
           {/* <Route path="/test" exact component={Test} /> */}
         </Switch>
+        <a href="https://github.com/A-fandino/cah" target="_blank">
+          <img className="bubble br-corner" src={ghlogo} />
+        </a>
       </div>
     </Router>
   );
