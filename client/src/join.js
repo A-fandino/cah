@@ -1,14 +1,30 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import gameAcces from "./game/accessFb";
 
-export default function Join() {
+export default function Join(props) {
   let [id, setId] = useState(0);
   function handleChange(event) {
     let val = event.target.value;
-    if (val >= 0 && val <= 9999) {
-      setId((id = val));
+    if (val >= 0 && val <= 9999 && val) {
+      gameAcces({ gameId: val }).once("value", (snapshot) => {
+        if (snapshot.exists()) {
+          setId((id = val));
+        } else {
+          setId((id = 0));
+        }
+      });
     }
   }
+
+  function handleClick() {
+    if (id) {
+      props.history.push("/game/" + id);
+      return;
+    }
+
+    alert("This game doesn't exist");
+  }
+
   return (
     <div className="centered-container">
       <h1>Join Game</h1>
@@ -19,9 +35,12 @@ export default function Join() {
         max="9999"
         onChange={handleChange}
       />
-      <Link to={`game/${id}`}>
+      <button id="unifiedButton" onClick={handleClick}>
+        Join
+      </button>
+      {/* <Link to={`game/${id}`}>
         <button id="unifiedButton">Join</button>
-      </Link>
+      </Link> */}
     </div>
   );
 }
