@@ -18,7 +18,7 @@ export default function Join(props) {
 
   function handleClick() {
     if (id) {
-      props.history.push("/game/" + id);
+      props.history.push("/lobby/" + id);
       return;
     }
 

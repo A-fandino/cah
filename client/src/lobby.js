@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Redirect } from "react-router";
 import Cookies from "universal-cookie";
 import gameAcces from "./game/accessFb";
 
@@ -7,6 +8,7 @@ export default function Lobby(props) {
   const id = cookies.get("id");
   const [numPlayers, setPlayers] = useState(0);
   const [leader, setLeader] = useState(false);
+  const [isGame, setIsGame] = useState(false);
 
   const minPlayers = 2;
 
@@ -30,7 +32,8 @@ export default function Lobby(props) {
       });
       game.child("blackCard").on("value", (snapshot) => {
         if (snapshot.exists()) {
-          props.history.push(`/game/${props.match.params.id}`);
+          setIsGame(true);
+          //props.history.push(`/game/${props.match.params.id}`);
         }
       });
     }
@@ -42,32 +45,38 @@ export default function Lobby(props) {
       return;
     }
     game.once("value", (snapshot) => {
-      if (snapshot.child("blackCard").exists()) props.history.push("/");
+      if (snapshot.child("blackCard").exists()) {
+        props.history.push("/");
+        alert("Could not join the game");
+      }
     });
   }
 
   function startGame() {
     game.child("blackCard").set("");
   }
-  return (
-    <div className="container">
-      <div className="centered-container">
-        <h1>Game: {props.match.params.id}</h1>
-        <p>
-          Players: {numPlayers}/{minPlayers}
-        </p>
-        {leader ? ( //IF LEADER
-          <button
-            onClick={startGame}
-            className={`default ${numPlayers < minPlayers && "disabled"}`}
-          >
-            Play
-          </button>
-        ) : (
-          // ELSE
-          <p>Wait for the leader to start the game</p>
-        )}
+  if (!isGame) {
+    return (
+      <div className="container">
+        <div className="centered-container">
+          <h1>Game: {props.match.params.id}</h1>
+          <p>
+            Players: {numPlayers}/{minPlayers}
+          </p>
+          {leader ? ( //IF LEADER
+            <button
+              onClick={startGame}
+              className={`default ${numPlayers < minPlayers && "disabled"}`}
+            >
+              Play
+            </button>
+          ) : (
+            // ELSE
+            <p>Wait for the leader to start the game</p>
+          )}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+  return <Redirect to={`/game/${props.match.params.id}`} />;
 }
