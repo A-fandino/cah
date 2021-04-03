@@ -7,8 +7,8 @@ export default function Lobby(props) {
   const cookies = new Cookies();
   const id = cookies.get("id");
   const [numPlayers, setPlayers] = useState(0);
-  const [leader, setLeader] = useState(false);
-  const [isGame, setIsGame] = useState(false);
+  const [leader, setLeader] = useState(false); //Checks if the current players is the leader
+  const [isGame, setIsGame] = useState(false); //Checks if  the games should start
 
   const minPlayers = 2;
 
@@ -44,6 +44,7 @@ export default function Lobby(props) {
       props.history.push("/login");
       return;
     }
+    if (leader) return;
     game.once("value", (snapshot) => {
       if (snapshot.child("blackCard").exists()) {
         props.history.push("/");
@@ -63,7 +64,7 @@ export default function Lobby(props) {
           <p>
             Players: {numPlayers}/{minPlayers}
           </p>
-          {leader ? ( //IF LEADER
+          {leader ? ( //if (leader)
             <button
               onClick={startGame}
               className={`default ${numPlayers < minPlayers && "disabled"}`}
@@ -71,7 +72,7 @@ export default function Lobby(props) {
               Play
             </button>
           ) : (
-            // ELSE
+            // else
             <p>Wait for the leader to start the game</p>
           )}
         </div>
