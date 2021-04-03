@@ -1,8 +1,8 @@
 import React from "react";
 import gameAccess from "./accessFb";
 export default function NextTurn(props) {
+  const game = gameAccess({ gameId: props.game });
   function handleClick() {
-    const game = gameAccess({ gameId: props.game });
     game.child("blackCard").child("selected").set(false);
   }
   return (

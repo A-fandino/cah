@@ -47,6 +47,21 @@ nav a:active {
   background-color: #2b2b2b;
 }
 
+.bubble {
+  position: fixed;
+  transition: transform 0.2s;
+  --dist: 15px;
+}
+
+.br-corner {
+  bottom: var(--dist);
+  right: var(--dist);
+}
+
+.bubble:hover {
+  transform: scale(0.95);
+}
+
 .create-button {
   padding: 25px 50px;
   border: 0;
@@ -201,6 +216,21 @@ button:active {
   filter: invert(1);
 }
 
+button.default {
+  background-color: #616161;
+  color: white;
+  border: none;
+  width: 100px;
+  font-size: 20px;
+  border-radius: 10px;
+  height: 40px;
+  outline: none;
+  box-shadow: 0px 2px 4px 0px black;
+}
+button.default:hover {
+  color: inherit;
+}
+
 a:hover + p {
   transition: 0.5s ease-in-out;
   text-shadow: #454545 0px 3px 1px;
@@ -314,4 +344,23 @@ input::-webkit-inner-spin-button {
 }
 ::-webkit-scrollbar-thumb:hover {
   background-color: #2b2b2b;
+}
+
+@media only screen and (max-width: 600px) {
+  #unifiedInput,
+  #unifiedButton {
+    border-radius: 0;
+    width: 55vw;
+    border-radius: 10px;
+  }
+
+  #unifiedInput {
+    height: 50px;
+    font-size: 30px;
+  }
+
+  #unifiedButton {
+    margin-top: 0px;
+    height: 40px;
+  }
 }

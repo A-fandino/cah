@@ -10,8 +10,22 @@ import { Redirect } from "react-router-dom";
 function App(props) {
   const cookies = new Cookies();
   const id = cookies.get("id");
+
+  const game = gameAccess({ gameId: props.match.params.id });
   let selfWhite;
+  let whiteData;
+  let blackData;
+
   if (id) {
+    whiteData = gameAccess({
+      gameId: props.match.params.id,
+    }).child("players");
+
+    blackData = gameAccess({
+      gameId: props.match.params.id,
+      color: "black",
+    });
+
     selfWhite = gameAccess({
       gameId: props.match.params.id,
       color: "white",
@@ -19,35 +33,25 @@ function App(props) {
     }).child("card");
   }
 
-  const [ctzar, setCtzar] = useState("");
+  //const [ctzar, setCtzar] = useState("");
   const [leader, setLeader] = useState("");
 
   useEffect(() => {
     if (id) {
-      const game = gameAccess({ gameId: props.match.params.id });
       game.on("value", async (snapshot) => {
-        //Set current player to "leader" if the game is new
-        if (!snapshot.child("leader").exists()) {
-          game.child("leader").set(id);
-          setLeader(id);
-        } else {
-          setLeader(snapshot.child("leader").val());
-        }
+        setLeader(snapshot.child("leader").val());
       });
     }
-    console.log(leader, leader === id);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (id) {
       const game = gameAccess({ gameId: props.match.params.id });
 
       game.on("value", async (snapshot) => {
-        setCtzar(snapshot.child("ctzar").val());
+        //setCtzar(snapshot.child("ctzar").val());
       });
-      selfWhite.set("");
 
-      //Retrives a black card from the backend
       if (leader === id) {
         GenerateBlackCard();
         CalcCtzar();
@@ -56,24 +60,14 @@ function App(props) {
   }); // eslint-disable-line react-hooks/exhaustive-deps
 
   function GenerateBlackCard() {
-    const whiteData = gameAccess({
-      gameId: props.match.params.id,
-    }).child("players");
-
-    const blackData = gameAccess({
-      gameId: props.match.params.id,
-      color: "black",
-    });
-
-    blackData.child("selected").on("value", (snapshot) => {
+    blackData.child("selected").on("value", async (snapshot) => {
       if (snapshot.val() !== true && leader === id) {
-        fetch("/api/black")
+        blackData.child("selected").set(true);
+        await fetch("/api/black")
           .then((res) => res.json())
           .then((resJson) => {
             if (resJson) {
-              console.log("a");
               whiteData.remove();
-              blackData.child("selected").set(true);
               blackData.child("text").set(resJson.text);
               blackData.child("set").set(resJson.set);
               blackData.child("picks").set(resJson.pick);
