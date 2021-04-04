@@ -8,7 +8,7 @@ export default function Lobby(props) {
   const id = cookies.get("id");
   const [numPlayers, setPlayers] = useState(0);
   const [leader, setLeader] = useState(false); //Checks if the current players is the leader
-  const [isGame, setIsGame] = useState(false); //Checks if  the games should start
+  const [start, setStart] = useState(false); //Checks if  the games should start
 
   const minPlayers = 2;
 
@@ -19,9 +19,7 @@ export default function Lobby(props) {
   useEffect(() => {
     if (id) {
       game.on("value", (snapshot) => {
-        if (snapshot.child("leader").val() === id) {
-          setLeader(true);
-        } else if (!snapshot.child("leader").exists()) {
+        if (!snapshot.child("leader").exists()) {
           game.child("leader").set(id);
           setLeader(true);
         }
@@ -32,8 +30,7 @@ export default function Lobby(props) {
       });
       game.child("blackCard").on("value", (snapshot) => {
         if (snapshot.exists()) {
-          setIsGame(true);
-          //props.history.push(`/game/${props.match.params.id}`);
+          setStart(true);
         }
       });
     }
@@ -56,7 +53,7 @@ export default function Lobby(props) {
   function startGame() {
     game.child("blackCard").set("");
   }
-  if (!isGame) {
+  if (!start) {
     return (
       <div className="container">
         <div className="centered-container">
