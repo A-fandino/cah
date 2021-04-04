@@ -14,6 +14,7 @@ function App(props) {
   const game = gameAccess({ gameId: props.match.params.id });
   let whiteData;
   let blackData;
+  let players;
 
   if (id) {
     whiteData = gameAccess({
@@ -24,6 +25,8 @@ function App(props) {
       gameId: props.match.params.id,
       color: "black",
     });
+
+    players = getPlayers();
   }
 
   //const [ctzar, setCtzar] = useState("");
@@ -71,7 +74,7 @@ function App(props) {
   }
 
   function resetWhiteCards() {
-    const players = getPlayers();
+    /* const players = getPlayers(); */
     for (let k in players) {
       whiteData.child(players[k]).child("card").set("");
     }
