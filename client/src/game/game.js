@@ -29,7 +29,7 @@ function App(props) {
     players = getPlayers();
   }
 
-  //const [ctzar, setCtzar] = useState("");
+  const [ctzar, setCtzar] = useState("");
   const [leader, setLeader] = useState("");
 
   useEffect(() => {
@@ -44,13 +44,12 @@ function App(props) {
     if (id) {
       const game = gameAccess({ gameId: props.match.params.id });
 
-      game.on("value", async (snapshot) => {
-        //setCtzar(snapshot.child("ctzar").val());
+      game.child("ctzar").on("value", (snapshot) => {
+        setCtzar(snapshot.val());
       });
 
       if (leader === id) {
         GenerateBlackCard();
-        CalcCtzar();
       }
     }
   }); // eslint-disable-line react-hooks/exhaustive-deps
@@ -58,7 +57,8 @@ function App(props) {
   function GenerateBlackCard() {
     blackData.child("selected").on("value", async (snapshot) => {
       if (snapshot.val() !== true) {
-        blackData.child("selected").set(true);
+        await blackData.child("selected").set(true);
+        CalcCtzar();
         await fetch("/api/black")
           .then((res) => res.json())
           .then((resJson) => {
@@ -74,24 +74,37 @@ function App(props) {
   }
 
   function resetWhiteCards() {
-    /* const players = getPlayers(); */
     for (let k in players) {
       whiteData.child(players[k]).child("card").set("");
     }
   }
 
   function getPlayers() {
-    let ids = [];
+    let ids;
+    ids = [];
     whiteData.on("value", (snapshot) => {
       for (let k in snapshot.val()) {
-        ids.push(k);
+        if (!ids.includes(k)) {
+          ids.push(k);
+        }
       }
       return;
     });
     return ids;
   }
 
-  function CalcCtzar() {}
+  async function CalcCtzar() {
+    let actual = 0;
+    if (ctzar) {
+      actual = players.indexOf(ctzar);
+      actual++;
+      if (actual >= players.length) {
+        actual = 0;
+      }
+    }
+    await game.child("ctzar").set(players[actual]);
+    return;
+  }
 
   if (id) {
     return (
@@ -99,7 +112,7 @@ function App(props) {
         <CardView game={props.match.params.id} />
         <Pick game={props.match.params.id} />
         <Hand game={props.match.params.id} />
-        {leader === id ? <NextTurn game={props.match.params.id} /> : "player"}
+        {ctzar === id ? <NextTurn game={props.match.params.id} /> : "player"}
       </React.StrictMode>
     );
   }
