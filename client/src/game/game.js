@@ -12,7 +12,6 @@ function App(props) {
   const id = cookies.get("id");
 
   const game = gameAccess({ gameId: props.match.params.id });
-  let selfWhite;
   let whiteData;
   let blackData;
 
@@ -25,12 +24,6 @@ function App(props) {
       gameId: props.match.params.id,
       color: "black",
     });
-
-    selfWhite = gameAccess({
-      gameId: props.match.params.id,
-      color: "white",
-      player: id,
-    }).child("card");
   }
 
   //const [ctzar, setCtzar] = useState("");
@@ -61,13 +54,13 @@ function App(props) {
 
   function GenerateBlackCard() {
     blackData.child("selected").on("value", async (snapshot) => {
-      if (snapshot.val() !== true && leader === id) {
+      if (snapshot.val() !== true) {
         blackData.child("selected").set(true);
         await fetch("/api/black")
           .then((res) => res.json())
           .then((resJson) => {
             if (resJson) {
-              whiteData.remove();
+              resetWhiteCards();
               blackData.child("text").set(resJson.text);
               blackData.child("set").set(resJson.set);
               blackData.child("picks").set(resJson.pick);
@@ -75,6 +68,24 @@ function App(props) {
           });
       }
     });
+  }
+
+  function resetWhiteCards() {
+    const players = getPlayers();
+    for (let k in players) {
+      whiteData.child(players[k]).child("card").set("");
+    }
+  }
+
+  function getPlayers() {
+    let ids = [];
+    whiteData.on("value", (snapshot) => {
+      for (let k in snapshot.val()) {
+        ids.push(k);
+      }
+      return;
+    });
+    return ids;
   }
 
   function CalcCtzar() {}
