@@ -12,11 +12,22 @@ function App(props) {
   const id = cookies.get("id");
 
   const game = gameAccess({ gameId: props.match.params.id });
-  let whiteData;
-  let blackData;
-  let players;
+  const [leader, setLeader] = useState(false);
 
-  if (id) {
+  let whiteData, blackData, players;
+  id && CreateVars();
+
+  useEffect(async () => {
+    await game.child("leader").once("value", async (snapshot) => {
+      setLeader(snapshot.val() === id);
+    });
+  }, []);
+
+  useEffect(() => {
+    leader && generateBlack();
+  });
+
+  function CreateVars() {
     whiteData = gameAccess({
       gameId: props.match.params.id,
     }).child("players");
@@ -29,48 +40,35 @@ function App(props) {
     players = getPlayers();
   }
 
-  const [ctzar, setCtzar] = useState("");
-  const [leader, setLeader] = useState("");
-
-  useEffect(() => {
-    if (id) {
-      game.once("value", async (snapshot) => {
-        setLeader(snapshot.child("leader").val());
+  function getPlayers() {
+    let ids;
+    ids = [];
+    whiteData.on("value", (snapshot) => {
+      snapshot.forEach((child) => {
+        if (!ids.includes(child.key)) ids.push(child.key);
       });
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    if (id) {
-      game.child("ctzar").on("value", (snapshot) => {
-        setCtzar(snapshot.val());
-      });
-
-      leader === id && GenerateBlackCard();
-    }
-  }); // eslint-disable-line react-hooks/exhaustive-deps
-
-  async function GenerateBlackCard() {
-    await blackData.child("selected").on("value", async (snapshot) => {
-      if (!snapshot.val()) {
-        blackData.child("selected").set(true);
-        await SetCard();
-        await CalcCtzar();
-      }
+      return;
     });
+    return ids;
   }
 
-  async function SetCard() {
-    await fetch("/api/black")
-      .then((res) => res.json())
-      .then((resJson) => {
-        if (resJson) {
-          resetWhiteCards();
-          blackData.child("text").set(resJson.text);
-          blackData.child("set").set(resJson.set);
-          blackData.child("picks").set(resJson.pick);
-        }
-      });
+  function generateBlack() {
+    blackData.child("text").on("value", async (snapshot) => {
+      console.log("a");
+      if (snapshot.val() === "...") {
+        console.log("b");
+        fetch("/api/black")
+          .then((res) => res.json())
+          .then((resJson) => {
+            if (resJson) {
+              resetWhiteCards();
+              blackData.child("text").set(resJson.text);
+              blackData.child("set").set(resJson.set);
+              blackData.child("picks").set(resJson.pick);
+            }
+          });
+      }
+    });
   }
 
   async function resetWhiteCards() {
@@ -79,39 +77,13 @@ function App(props) {
     }
   }
 
-  function getPlayers() {
-    let ids;
-    ids = [];
-    whiteData.on("value", (snapshot) => {
-      for (let k in snapshot.val()) {
-        if (!ids.includes(k)) {
-          ids.push(k);
-        }
-      }
-      return;
-    });
-    return ids;
-  }
-
-  async function CalcCtzar() {
-    let actual = 0;
-    if (ctzar) {
-      actual = players.indexOf(ctzar);
-      actual++;
-      if (actual >= players.length) {
-        actual = 0;
-      }
-    }
-    game.child("ctzar").set(players[actual]);
-  }
-
   if (id) {
     return (
       <React.StrictMode>
         <CardView game={props.match.params.id} />
         <Pick game={props.match.params.id} />
         <Hand game={props.match.params.id} />
-        {leader === id ? <NextTurn game={props.match.params.id} /> : "player"}
+        {leader ? <NextTurn game={props.match.params.id} /> : ""}
       </React.StrictMode>
     );
   }
