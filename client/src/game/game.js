@@ -34,7 +34,7 @@ function App(props) {
 
   useEffect(() => {
     if (id) {
-      game.on("value", async (snapshot) => {
+      game.once("value", async (snapshot) => {
         setLeader(snapshot.child("leader").val());
       });
     }
@@ -42,38 +42,38 @@ function App(props) {
 
   useEffect(() => {
     if (id) {
-      const game = gameAccess({ gameId: props.match.params.id });
-
       game.child("ctzar").on("value", (snapshot) => {
         setCtzar(snapshot.val());
       });
 
-      if (leader === id) {
-        GenerateBlackCard();
-      }
+      leader === id && GenerateBlackCard();
     }
   }); // eslint-disable-line react-hooks/exhaustive-deps
 
-  function GenerateBlackCard() {
-    blackData.child("selected").on("value", async (snapshot) => {
-      if (snapshot.val() !== true) {
-        await blackData.child("selected").set(true);
-        CalcCtzar();
-        await fetch("/api/black")
-          .then((res) => res.json())
-          .then((resJson) => {
-            if (resJson) {
-              resetWhiteCards();
-              blackData.child("text").set(resJson.text);
-              blackData.child("set").set(resJson.set);
-              blackData.child("picks").set(resJson.pick);
-            }
-          });
+  async function GenerateBlackCard() {
+    await blackData.child("selected").on("value", async (snapshot) => {
+      if (!snapshot.val()) {
+        blackData.child("selected").set(true);
+        await SetCard();
+        await CalcCtzar();
       }
     });
   }
 
-  function resetWhiteCards() {
+  async function SetCard() {
+    await fetch("/api/black")
+      .then((res) => res.json())
+      .then((resJson) => {
+        if (resJson) {
+          resetWhiteCards();
+          blackData.child("text").set(resJson.text);
+          blackData.child("set").set(resJson.set);
+          blackData.child("picks").set(resJson.pick);
+        }
+      });
+  }
+
+  async function resetWhiteCards() {
     for (let k in players) {
       whiteData.child(players[k]).child("card").set("");
     }
@@ -102,8 +102,7 @@ function App(props) {
         actual = 0;
       }
     }
-    await game.child("ctzar").set(players[actual]);
-    return;
+    game.child("ctzar").set(players[actual]);
   }
 
   if (id) {
@@ -112,7 +111,7 @@ function App(props) {
         <CardView game={props.match.params.id} />
         <Pick game={props.match.params.id} />
         <Hand game={props.match.params.id} />
-        {ctzar === id ? <NextTurn game={props.match.params.id} /> : "player"}
+        {leader === id ? <NextTurn game={props.match.params.id} /> : "player"}
       </React.StrictMode>
     );
   }
