@@ -13,17 +13,21 @@ function App(props) {
 
   const game = gameAccess({ gameId: props.match.params.id });
   const [leader, setLeader] = useState(false);
-
+  const [ctzar, setCtzar] = useState("");
   let whiteData, blackData, players;
   id && CreateVars();
 
-  useEffect(async () => {
-    await game.child("leader").once("value", async (snapshot) => {
+  useEffect(() => {
+    game.child("leader").once("value", (snapshot) => {
       setLeader(snapshot.val() === id);
     });
   }, []);
 
   useEffect(() => {
+    game.child("ctzar").on("value", (snapshot) => {
+      setCtzar(snapshot.val());
+    });
+
     leader && generateBlack();
   });
 
@@ -52,12 +56,10 @@ function App(props) {
     return ids;
   }
 
-  function generateBlack() {
-    blackData.child("text").on("value", async (snapshot) => {
-      console.log("a");
+  async function generateBlack() {
+    await blackData.child("text").on("value", async (snapshot) => {
       if (snapshot.val() === "...") {
-        console.log("b");
-        fetch("/api/black")
+        await fetch("/api/black")
           .then((res) => res.json())
           .then((resJson) => {
             if (resJson) {
@@ -67,8 +69,23 @@ function App(props) {
               blackData.child("picks").set(resJson.pick);
             }
           });
+
+        await CalcCtzar();
       }
     });
+  }
+
+  async function CalcCtzar() {
+    let actual = 0;
+    if (ctzar) {
+      actual = players.indexOf(ctzar);
+      actual++;
+      if (actual >= players.length) {
+        actual = 0;
+      }
+    }
+    console.log(actual);
+    game.child("ctzar").set(players[actual]);
   }
 
   async function resetWhiteCards() {
@@ -83,7 +100,7 @@ function App(props) {
         <CardView game={props.match.params.id} />
         <Pick game={props.match.params.id} />
         <Hand game={props.match.params.id} />
-        {leader ? <NextTurn game={props.match.params.id} /> : ""}
+        {ctzar === id ? <NextTurn game={props.match.params.id} /> : ""}
       </React.StrictMode>
     );
   }
