@@ -57,8 +57,12 @@ function App(props) {
   }
 
   async function generateBlack() {
+    console.log("A");
+    let count = 0;
     await blackData.child("text").on("value", async (snapshot) => {
-      if (snapshot.val() === "...") {
+      if (count !== 0) return;
+      if (snapshot.val() === "..." || !snapshot.exists()) {
+        count++;
         await fetch("/api/black")
           .then((res) => res.json())
           .then((resJson) => {
