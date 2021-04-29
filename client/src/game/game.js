@@ -12,10 +12,26 @@ function App(props) {
   const id = cookies.get("id");
 
   const game = gameAccess({ gameId: props.match.params.id });
-  let whiteData;
-  let blackData;
+  const [leader, setLeader] = useState(false);
+  const [ctzar, setCtzar] = useState("");
+  let whiteData, blackData, players;
+  id && CreateVars();
 
-  if (id) {
+  useEffect(() => {
+    game.child("leader").once("value", (snapshot) => {
+      setLeader(snapshot.val() === id);
+    });
+  }, []);
+
+  useEffect(() => {
+    game.child("ctzar").on("value", (snapshot) => {
+      setCtzar(snapshot.val());
+    });
+
+    leader && generateBlack();
+  });
+
+  function CreateVars() {
     whiteData = gameAccess({
       gameId: props.match.params.id,
     }).child("players");
@@ -24,38 +40,29 @@ function App(props) {
       gameId: props.match.params.id,
       color: "black",
     });
+
+    players = getPlayers();
   }
 
-  //const [ctzar, setCtzar] = useState("");
-  const [leader, setLeader] = useState("");
-
-  useEffect(() => {
-    if (id) {
-      game.on("value", async (snapshot) => {
-        setLeader(snapshot.child("leader").val());
+  function getPlayers() {
+    let ids;
+    ids = [];
+    whiteData.on("value", (snapshot) => {
+      snapshot.forEach((child) => {
+        if (!ids.includes(child.key)) ids.push(child.key);
       });
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+      return;
+    });
+    return ids;
+  }
 
-  useEffect(() => {
-    if (id) {
-      const game = gameAccess({ gameId: props.match.params.id });
-
-      game.on("value", async (snapshot) => {
-        //setCtzar(snapshot.child("ctzar").val());
-      });
-
-      if (leader === id) {
-        GenerateBlackCard();
-        CalcCtzar();
-      }
-    }
-  }); // eslint-disable-line react-hooks/exhaustive-deps
-
-  function GenerateBlackCard() {
-    blackData.child("selected").on("value", async (snapshot) => {
-      if (snapshot.val() !== true) {
-        blackData.child("selected").set(true);
+  async function generateBlack() {
+    console.log("A");
+    let count = 0;
+    await blackData.child("text").on("value", async (snapshot) => {
+      if (count !== 0) return;
+      if (snapshot.val() === "..." || !snapshot.exists()) {
+        count++;
         await fetch("/api/black")
           .then((res) => res.json())
           .then((resJson) => {
@@ -66,29 +73,30 @@ function App(props) {
               blackData.child("picks").set(resJson.pick);
             }
           });
+
+        await CalcCtzar();
       }
     });
   }
 
-  function resetWhiteCards() {
-    const players = getPlayers();
+  async function CalcCtzar() {
+    let actual = 0;
+    if (ctzar) {
+      actual = players.indexOf(ctzar);
+      actual++;
+      if (actual >= players.length) {
+        actual = 0;
+      }
+    }
+    console.log(actual);
+    game.child("ctzar").set(players[actual]);
+  }
+
+  async function resetWhiteCards() {
     for (let k in players) {
       whiteData.child(players[k]).child("card").set("");
     }
   }
-
-  function getPlayers() {
-    let ids = [];
-    whiteData.on("value", (snapshot) => {
-      for (let k in snapshot.val()) {
-        ids.push(k);
-      }
-      return;
-    });
-    return ids;
-  }
-
-  function CalcCtzar() {}
 
   if (id) {
     return (
@@ -96,7 +104,7 @@ function App(props) {
         <CardView game={props.match.params.id} />
         <Pick game={props.match.params.id} />
         <Hand game={props.match.params.id} />
-        {leader === id ? <NextTurn game={props.match.params.id} /> : "player"}
+        {ctzar === id ? <NextTurn game={props.match.params.id} /> : ""}
       </React.StrictMode>
     );
   }
