@@ -28,3 +28,5 @@ Then a **data.js** file must be created at **src/game** exporting an object with
 
 
     export default data;
+
+> I think this project is a little messed up so I'll probably make a new version with different technologies and cleaner code in the future

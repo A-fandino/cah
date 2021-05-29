@@ -57,7 +57,6 @@ function App(props) {
   }
 
   async function generateBlack() {
-    console.log("A");
     let count = 0;
     await blackData.child("text").on("value", async (snapshot) => {
       if (count !== 0) return;
