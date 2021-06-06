@@ -18,7 +18,12 @@ if (!firebase.apps.length) {
   firebase.app(); // if already initialized, use that one
 }
 firebase.analytics();
-
+/**
+ * Documentation
+ * @param {number} gameId
+ * @param {"black"|"white"} color Default black
+ * @param {number} player Optional if Black
+ */
 export default function accessGame(obj) {
   let nameRef = firebase.database().ref().child("games").child(obj.gameId);
   if (obj.color !== "white" && obj.color !== "black" && !obj.player) {

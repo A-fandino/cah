@@ -12,8 +12,16 @@ export default function card(props) {
   if (props.color === "black") {
     imgClass = "invert";
   }
+
   return (
-    <div style={style.cards} className={divClass + hideClass}>
+    <div
+      id={props.keyId}
+      onClick={(e) => {
+        if (props.color === "white") props.handleclick(e.currentTarget.id);
+      }}
+      style={style.cards}
+      className={divClass + hideClass}
+    >
       <span className="card-header">{props.children}</span>
       <div className="card-bottom">
         <img className={imgClass} style={style.img} src={icon} alt="|" />
