@@ -5,7 +5,7 @@ import userRoute from "./routes/user.js";
 import gameRoute from "./routes/game.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-
+let __dirname = path.resolve(path.dirname(""));
 const app = Express();
 
 app.use(Express.json());
@@ -14,8 +14,9 @@ app.use(
     extended: true,
   })
 );
+app.use(Express.static(path.join(__dirname, "client/build")));
 
-const port = 3001;
+const port = 80;
 dotenv.config();
 mongoose.connect(
   process.env.CONNECTION,
@@ -28,7 +29,6 @@ app.use("/user", userRoute);
 app.use("/game", gameRoute);
 
 app.get("*", (req, res) => {
-  let __dirname = path.resolve(path.dirname(""));
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
 
