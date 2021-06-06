@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import CardView from "./cardView";
 import Hand from "./hand";
 import Pick from "./pick";
-import NextTurn from "./nextTurn";
 import gameAccess from "./accessFb";
 import Cookies from "universal-cookie";
 import { Redirect } from "react-router-dom";
@@ -97,15 +96,20 @@ function App(props) {
     }
   }
 
-  async function cardClick() {}
+  const cardClick = async (pId) => {
+    const currId = cookies.get("id");
+    if (currId === ctzar) {
+      game.child("blackCard").child("text").set("...");
+      game.child("blackCard").child("set").set("...");
+    }
+  };
 
   if (id) {
     return (
       <React.StrictMode>
-        <CardView game={props.match.params.id} />
+        <CardView cardClick={cardClick} game={props.match.params.id} />
         <Pick game={props.match.params.id} />
         <Hand game={props.match.params.id} />
-        {ctzar === id ? <NextTurn game={props.match.params.id} /> : ""}
       </React.StrictMode>
     );
   }

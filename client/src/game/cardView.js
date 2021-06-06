@@ -26,7 +26,7 @@ class CardView extends Component {
         const curr = values[key];
         cardsObj.push(
           <Card
-            handleclick={this.handleClick}
+            handleclick={this.props.cardClick}
             key={key}
             keyId={"card-" + key}
             set={curr.set}
@@ -46,15 +46,6 @@ class CardView extends Component {
       });
     });
   }
-
-  handleClick = async (pId) => {
-    const cookie = new Cookies();
-    const currId = cookie.get("id");
-    const gameId = this.props.game;
-    const game = gameAccess({ gameId });
-    game.child("blackCard").child("text").set("...");
-    game.child("blackCard").child("set").set("...");
-  };
 
   render() {
     return (

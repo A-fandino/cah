@@ -17,7 +17,7 @@ export default function card(props) {
     <div
       id={props.keyId}
       onClick={(e) => {
-        props.handleclick(e.currentTarget.id);
+        if (props.color === "white") props.handleclick(e.currentTarget.id);
       }}
       style={style.cards}
       className={divClass + hideClass}
