@@ -97,6 +97,8 @@ function App(props) {
     }
   }
 
+  async function cardClick() {}
+
   if (id) {
     return (
       <React.StrictMode>

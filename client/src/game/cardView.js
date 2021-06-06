@@ -1,6 +1,7 @@
 import Card from "./cards/card";
 import gameAccess from "./accessFb";
 import React, { Component } from "react";
+import Cookies from "universal-cookie";
 
 class CardView extends Component {
   constructor() {
@@ -24,7 +25,13 @@ class CardView extends Component {
       for (let key in values) {
         const curr = values[key];
         cardsObj.push(
-          <Card key={key} set={curr.set} color="white">
+          <Card
+            handleclick={this.handleClick}
+            key={key}
+            keyId={"card-" + key}
+            set={curr.set}
+            color="white"
+          >
             {curr.card}
           </Card>
         );
@@ -39,6 +46,16 @@ class CardView extends Component {
       });
     });
   }
+
+  handleClick = async (pId) => {
+    const cookie = new Cookies();
+    const currId = cookie.get("id");
+    const gameId = this.props.game;
+    const game = gameAccess({ gameId });
+    game.child("blackCard").child("text").set("...");
+    game.child("blackCard").child("set").set("...");
+  };
+
   render() {
     return (
       <React.Fragment>
