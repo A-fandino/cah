@@ -10,7 +10,7 @@ export default function Lobby(props) {
   const [leader, setLeader] = useState(false); //Checks if the current players is the leader
   const [start, setStart] = useState(false); //Checks if  the games should start
 
-  const minPlayers = 2;
+  const minPlayers = 3;
 
   const game = gameAcces({ gameId: props.match.params.id });
   const players = game.child("players");
