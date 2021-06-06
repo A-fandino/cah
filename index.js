@@ -16,7 +16,7 @@ app.use(
 );
 app.use(Express.static(path.join(__dirname, "client/build")));
 
-const port = 80;
+const port = 5000;
 dotenv.config();
 mongoose.connect(
   process.env.CONNECTION,
