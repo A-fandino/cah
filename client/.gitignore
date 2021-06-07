@@ -6,7 +6,7 @@
 .pnp.js
 
 #Project
-#src/game/data.js
+src/game/data.js
 .eslintcache
 src/test.js
 ../debug.log
