@@ -1,6 +1,8 @@
 # Cards Against Humanity
 
 A web game based on the popular card game "Cards Against Humanity"
+You can try it [here](https://cah-afandino.herokuapp.com/) with some friends.
+(It could take a while to start)
 
 **Home page**
 
@@ -58,7 +60,19 @@ Then a **data.js** file must be created at **client/src/game** exporting an obje
 
     export default data;
 
+When all of this is completed, you must go to the **client** directory and execute:
+
+> npm run build
+
+Then you can start de server in the root directory with
+
+> npm start
+
+or
+
+> node index.js
+
 ### Some thoughts
 
 > I think this project is a little messed up so I'll probably make a new version with different technologies and cleaner code in the future
-> It was my first "big-project" so I hope you understand
+> It was my first "big-project" so I hope you understand.
